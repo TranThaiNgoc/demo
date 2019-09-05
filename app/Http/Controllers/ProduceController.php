@@ -77,7 +77,7 @@ class ProduceController extends Controller
                 'total_prolinerevenue' => $total_prolinerevenue,
                 'total_prolinefitshare' => $total_prolinefitshare,
             ];
-        }else{
+        }else{ 
             $data = [
             'itemcart' => itemcategory::all(),
             'costcart' => costcategory::all(),
