@@ -1,0 +1,113 @@
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.panel-default>.panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+.panel-default {
+    border-color: #ddd;
+}
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+}
+.panel-footer {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.panel-body {
+    padding: 15px;
+}
+.panel-default>.panel-heading+.panel-collapse>.panel-body {
+    border-top-color: #ddd;
+}
+.panel-default .panel-footer, .panel-white .panel-footer {
+    background: #f5f5f5;
+    color: #263238;
+    border-top: 1px solid rgba(120,130,140,.13);
+}
+
+.panel .panel-heading {
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px 21px;
+}
+.panel .panel-footer {
+    background: #fff;
+    border-radius: 0;
+    padding: 10px 21px;
+}
+
+.panel-success>.panel-heading {
+    color: black;
+    background-color: #ecb613;
+    border-color: #ecb613;
+}
+.panel-success {
+    border-color: #ecb613;
+}
+.panel-danger>.panel-heading {
+    color: #a94442;
+    background-color: #f98006;
+    border-color: #f98006;
+}
+.panel-danger {
+    border-color: #f98006;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+.panel-green .panel-heading a, .panel-success .panel-heading a, .panel-danger .panel-heading a {
+    color: #333;
+}

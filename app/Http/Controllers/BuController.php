@@ -1,0 +1,499 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\bucategory;
+use App\bu;
+use App\procategory;
+use App\produce;
+use App\itemcategory;
+use App\costcategory;
+use App\buvarcost;
+use App\bufixcost;
+use App\burevenue;
+use App\buprofitshare;
+use App\provarcost;
+use App\profixcost;
+use App\prorevenue;
+use App\proprofitshare;
+use Session;
+use DB;
+
+class BuController extends Controller
+{
+    public function getList() {
+        $data = [
+            'bu' => bu::all(),
+            'bucategory' => bucategory::all(),
+        ];
+        return view('admin.themes.bu.list', $data);
+    }
+
+    public function getAdd() {
+        $bucategory = bucategory::all();
+        return view('admin.themes.bu.add', compact('bucategory'));
+    }
+
+    public function postAdd(Request $request) {
+        $this->validate($request,
+        [
+            'name' => 'required|min:2|max:255',
+            'code' => 'required|min:8|max:10',
+            'address' => 'required',
+            'tax' => 'required|min:8|max:10',
+            'follow' => 'required|integer',
+            'mail' => 'required|email|unique:bu,mail',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required'
+        ],
+        [
+            'name.required' => 'Company name may not be blank.',
+            'name.min' => 'Company name has an invalid length.',
+            'name.max' => 'Company name has an invalid length.',
+            'code.required' => 'Code may not be blank.',
+            'code.min' => 'Code has an invalid length.',
+            'code.max' => 'Code has an invalid length.',
+            'address.required' => 'Address may not be blank.',
+            'tax.required' => 'Tax may not be blank.',
+            'tax.min' => 'Tax has an invalid length.',
+            'tax.max' => 'Tax has an invalid length.',
+            'follow.required' => 'Follow may not be blank.',
+            'follow.integer' => 'Follow has an invalid length.',
+            'mail.requird' => 'Email may not be blank.',
+            'mail.email' => 'Invalid email.',
+            'mail.unique' => 'Email is already in use',
+            'phone.required' => 'Phone may not be blank.',
+            'phone.regex' => 'invalid phone number.',
+            'remark.required' => 'Remark may not be blank.',
+        ]);
+        $bucategory_ = bucategory::all();
+        foreach($bucategory_ as $key => $value) {
+            $bucategory[$value->id] = $value;
+        }
+        if(!array_key_exists($request->bucategory_id, $bucategory)) {
+            abort('404');
+        }
+        bu::create([
+            'name' => $request->name,
+            'code' => $request->code,
+            'address' => $request->address,
+            'bucategory_id' => $request->bucategory_id,
+            'tax' => $request->tax,
+            'follow' => $request->follow,
+            'mail' => $request->mail,
+            'phone' => $request->phone,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add a successful company.');
+    }
+
+    public function postEdit(Request $request, $id) {
+        $bu = bu::find($id);
+        if(is_null($bu)) {
+            abort('404');
+        }
+        $this->validate($request,
+        [
+            'name' => 'required|min:2|max:255',
+            'code' => 'required|min:8|max:10',
+            'address' => 'required',
+            'tax' => 'required|min:8|max:10',
+            'follow' => 'required|integer',
+            'mail' => 'required|email',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required'
+        ],
+        [
+            'name.required' => 'Company name may not be blank.',
+            'name.min' => 'Company name has an invalid length.',
+            'name.max' => 'Company name has an invalid length.',
+            'code.required' => 'Code may not be blank.',
+            'code.min' => 'Code has an invalid length.',
+            'code.max' => 'Code has an invalid length.',
+            'address.required' => 'Address may not be blank.',
+            'tax.required' => 'Tax may not be blank.',
+            'tax.min' => 'Tax has an invalid length.',
+            'tax.max' => 'Tax has an invalid length.',
+            'follow.required' => 'Follow may not be blank.',
+            'follow.integer' => 'Follow has an invalid length.',
+            'mail.requird' => 'Email may not be blank.',
+            'mail.email' => 'Invalid email.',
+            'phone.required' => 'Phone may not be blank.',
+            'phone.regex' => 'invalid phone number.',
+            'remark.required' => 'Remark may not be blank.',
+        ]);
+        $bucategory_ = bucategory::all();
+        foreach($bucategory_ as $key => $value) {
+            $bucategory[$value->id] = $value;
+        }
+        if(!array_key_exists($request->bucategory_id, $bucategory)) {
+            abort('404');
+        }
+        $bu->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'address' => $request->address,
+            'bucategory_id' => $request->bucategory_id,
+            'tax' => $request->tax,
+            'follow' => $request->follow,
+            'mail' => $request->mail,
+            'phone' => $request->phone,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Update a successful company.');
+        
+    }
+
+    public function getEdit($id) {
+        $bucategory = bucategory::all();
+        $bu = bu::find($id);
+        if(is_null($bu)) {
+            abort('404');
+        }
+
+        return view('admin.themes.bu.edit', compact('bu', 'bucategory'));
+    }
+
+    public function getDetail($id) {
+        $bu = bu::find($id);
+        if(is_null($id)) {
+            abort('404');
+        }
+        $produce = DB::table('produce')->where('bu_id',$id)->get()->toArray();
+        foreach($produce as $k => $v) {
+            $produces[] = $v->id;
+        }
+        $provarcost = provarcost::whereIn('pro_id', $produces)->get();
+        $profixcost = profixcost::whereIn('pro_id', $produces)->get();
+        $prorevenue = prorevenue::whereIn('pro_id', $produces)->get();
+        $proprofitshare = proprofitshare::whereIn('pro_id', $produces)->get();
+        $total_profixcost = 0;
+        foreach($profixcost as $key => $value) {
+            $total_profixcost += ($value->total);
+        }
+        $total_provarcost = 0;
+        foreach($provarcost as $key => $value) {
+            $total_provarcost += ($value->total);
+        }
+        $total_prorevenue = 0;
+        foreach($prorevenue as $key => $value) {
+            $total_prorevenue += ($value->amount);
+        }
+        $total_profitshare = 0;
+        foreach($proprofitshare as $key => $value) {
+            $total_profitshare += ($value->amount);
+        }
+        $data = [
+            'bucategory' => bucategory::all(),
+            'bu' => $bu,
+            'procategory' => procategory::all(),
+            'produce' => $produce,
+            'itemcart' => itemcategory::all(),
+            'costcart' => costcategory::all(),
+            'buvarcost' => buvarcost::where('bu_id', $id)->get(),
+            'bufixcost' => bufixcost::where('bu_id', $id)->get(),
+            'burevenue' => burevenue::where('bu_id', $id)->get(),
+            'buprofitshare' => buprofitshare::where('bu_id', $id)->get(),
+            'total_profixcost' => $total_profixcost,
+            'total_provarcost' => $total_provarcost,
+            'total_prorevenue' => $total_prorevenue,
+            'total_profitshare' => $total_profitshare,
+            'provarcost' => $provarcost,
+            'profixcost' => $profixcost,
+            'prorevenue' => $prorevenue,
+            'proprofitshare' => $proprofitshare,
+        ];
+        $total_bufixcost = 0;
+        foreach($data['bufixcost'] as $key => $value) {
+            $total_bufixcost += ($value->total);
+        }
+        $total_buvarcost = 0;
+        foreach($data['buvarcost'] as $key => $value) {
+            $total_buvarcost += ($value->total);
+        }
+        $total_burevenue = 0;
+        foreach($data['burevenue'] as $key => $value) {
+            $total_burevenue += ($value->amount);
+        }
+        $total_buprofitshare = 0;
+        foreach($data['buprofitshare'] as $key => $value) {
+            $total_buprofitshare += ($value->amount);
+        }
+        $total_amount = $total_burevenue - ($total_bufixcost+$total_buvarcost);
+        Session::put('total_amount', $total_amount);
+        return view('admin.themes.bu.detail', $data, compact('total_bufixcost', 'total_buvarcost', 'total_burevenue', 'total_amount', 'total_buprofitshare'));
+    }
+
+    public function getDelete($id) {
+        $bu = bu::find($id);
+        if(is_null($bu)) {
+            abort('404');
+        }
+        $bu->delete();
+
+        return redirect()->back()->with('success', 'Successfully deleted the company.');
+    }
+
+    public function postAddProduct(Request $request, $id) {
+        $this->validate($request,
+        [
+            'name' => 'required|min:2|max:255',
+            'code' => 'required|min:8|max:10',
+            'address' => 'required',
+            'follow' => 'required|integer',
+            'mail' => 'required|email',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required'
+        ],
+        [
+            'name.required' => 'Company name may not be blank.',
+            'name.min' => 'Company name has an invalid length.',
+            'name.max' => 'Company name has an invalid length.',
+            'code.required' => 'Code may not be blank.',
+            'code.min' => 'Code has an invalid length.',
+            'code.max' => 'Code has an invalid length.',
+            'address.required' => 'Address may not be blank.',
+            'follow.required' => 'Follow may not be blank.',
+            'follow.integer' => 'Follow has an invalid length.',
+            'mail.requird' => 'Email may not be blank.',
+            'mail.email' => 'Invalid email.',
+            'phone.required' => 'Phone may not be blank.',
+            'phone.regex' => 'invalid phone number.',
+            'remark.required' => 'Remark may not be blank.',
+        ]);
+        $procategoory_ = procategory::all();
+        foreach($procategoory_ as $key => $value) {
+            $procategory[$value->id] = $value;
+        }
+        if(!array_key_exists($request->procategory_id, $procategory)) {
+            abort('404');
+        }
+        produce::create([
+            'name' => $request->name,
+            'bu_id' => $id,
+            'code' => $request->code,
+            'address' => $request->address,
+            'procategory_id' => $request->procategory_id,
+            'follow' => $request->follow,
+            'mail' => $request->mail,
+            'phone' => $request->phone,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add produce successfully.');
+    }
+
+    public function getDeleteProduce($id) {
+        $produce = produce::find($id);
+        if(is_null($produce)) {
+            abort('404');
+        }
+        $produce->delete();
+
+        return redirect()->back()->with('success', 'Delete produce successfully.');
+    }
+
+    public function postAddvariable(Request $request, $id) {
+        $this->validate($request,
+        [
+            'item' => 'required|min:6|max:20',
+            'docnum' => 'required|min:6|max:20',
+            'date' => 'required',
+            'qty' => 'required|max:6|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'cost' => 'required|max:255|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required',
+        ]);
+        $itemcart_ = itemcategory::all();
+        $costcart_ = costcategory::all();
+        foreach($itemcart_ as $key => $value) {
+            $itemcart[$value->id] = $value;
+        }
+        foreach($costcart_ as $key => $value) {
+            $costcart[$value->id] = $value;
+        }
+        if(!array_key_exists($request->itemcategory_id, $itemcart)) {
+            abort('404');
+        }
+        if(!array_key_exists($request->costcategory_id, $costcart)) {
+            abort('404');
+        }
+        if(!array_key_exists($request->unit_id, config('master.unit'))) {
+            abort('404');
+        }
+        buvarcost::create([
+            'bu_id' => $id,
+            'item' => $request->item,
+            'docnum' => $request->docnum,
+            'itemcategory_id' => $request->itemcategory_id,
+            'costcategory_id' => $request->costcategory_id,
+            'unit_id' => $request->unit_id,
+            'qty' => $request->qty,
+            'amount' => $request->cost,
+            'total' => $request->qty*$request->cost,
+            'date' => $request->date,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add variable successful.');
+    }
+
+    public function getDeletevariable($id) {
+        $variable = buvarcost::find($id);
+        if(is_null($variable)) {
+            abort('404');
+        }
+        $variable->delete();
+
+        return redirect()->back()->with('success', 'Delete variable successful.');
+    }
+
+    public function postAddFixed(Request $request, $id) {
+        $this->validate($request,
+        [
+            'item' => 'required|min:6|max:20',
+            'docnum' => 'required|min:6|max:20',
+            'date' => 'required',
+            'qty' => 'required|max:6|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'cost' => 'required|max:255|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required',
+        ]);
+        $itemcart_ = itemcategory::all();
+        $costcart_ = costcategory::all();
+        foreach($itemcart_ as $key => $value) {
+            $itemcart[$value->id] = $value;
+        }
+        foreach($costcart_ as $key => $value) {
+            $costcart[$value->id] = $value;
+        }
+        if(!array_key_exists($request->itemcategory_id, $itemcart)) {
+            abort('404');
+        }
+        if(!array_key_exists($request->costcategory_id, $costcart)) {
+            abort('404');
+        }
+        if(!array_key_exists($request->unit_id, config('master.unit'))) {
+            abort('404');
+        }
+        bufixcost::create([
+            'bu_id' => $id,
+            'item' => $request->item,
+            'docnum' => $request->docnum,
+            'itemcategory_id' => $request->itemcategory_id,
+            'costcategory_id' => $request->costcategory_id,
+            'unit_id' => $request->unit_id,
+            'qty' => $request->qty,
+            'amount' => $request->cost,
+            'total' => $request->qty*$request->cost,
+            'date' => $request->date,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add fixed cost successful.');
+    }
+
+    public function getDeleteFixed($id) {
+        $bufixcost = bufixcost::find($id);
+        if(is_null($bufixcost)) {
+            abort('404');
+        }
+        $bufixcost->delete();
+
+        return redirect()->back()->with('success', 'Delete fixed successful.');
+    }
+
+    public function postAddRevenue(Request $request, $id) {
+        $this->validate($request,
+        [
+            // 'item' => 'required|min:6|max:20',
+            'docnum' => 'required|min:6|max:20',
+            'name' => 'required|min:2|max:255',
+            'date' => 'required',
+            // 'qty' => 'required|max:6|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'amount' => 'required|max:255|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required',
+        ]);
+        burevenue::create([
+            'name' => $request->name,
+            'bu_id' => $id,
+            'cart_item' => $request->cart_item,
+            'docnum' => $request->docnum,
+            'date' => $request->date,
+            'amount' => $request->amount,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add revenue successful.');
+    }
+
+    public function getDeleteRevenue($id) {
+        $burevenue = burevenue::find($id);
+        if(is_null($burevenue)) {
+            abort('404');
+        }
+        $burevenue->delete();
+
+        return redirect()->back()->with('success', 'Delete revenue successful.');
+    }
+
+    public function postAddProfit(Request $request, $id) {
+        if(Session('total_amount') < 0) {
+            return redirect()->back()->with('error', 'Negative profits cannot divide profits.');
+        }
+        $this->validate($request,
+        [
+            'name' => 'required|min:2|max:255',
+            'docnum' => 'required|min:6|max:20',
+            'date' => 'required',
+            'remark' => 'required|max:3|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'remark' => 'required',
+        ]);
+        $test = (100-$request->percent)/100;
+        $amount = Session('total_amount')*$test;
+        buprofitshare::create([
+            'name' => $request->name,
+            'cart_item' => $request->cart_item,
+            'bu_id' => $id,
+            'docnum' => $request->docnum,
+            'percent' => $request->percent,
+            'amount' => Session('total_amount')-$amount,
+            'total' => Session('total_amount'),
+            'date' => $request->date,
+            'remark' => $request->remark,
+            'is_deleted' => 0,
+            'created_at' => date(now()),
+            'updated_at' => date(now()),
+        ]);
+
+        return redirect()->back()->with('success', 'Add profix share successful.');
+    }
+
+    public function getDeleteProfix($id) {
+        $buprofitshare = buprofitshare::find($id);
+        if(is_null($buprofitshare)){
+            abort('404');
+        }
+        $buprofitshare->delete();
+
+        return redirect()->back()->with('success', 'Delete profix share successful.');
+    }
+}
