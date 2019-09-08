@@ -17,8 +17,12 @@ use App\provarcost;
 use App\profixcost;
 use App\prorevenue;
 use App\proprofitshare;
+use App\User;
 use Session;
 use DB;
+use Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
+use PDF;
 
 class BuController extends Controller
 {
@@ -168,9 +172,11 @@ class BuController extends Controller
             abort('404');
         }
         $produce = DB::table('produce')->where('bu_id',$id)->get()->toArray();
+        Session::put('bu_produce', $id);
         foreach($produce as $k => $v) {
             $produces[] = $v->id;
         }
+        Session::put('bu_produces', $produces);
         $provarcost = provarcost::whereIn('pro_id', $produces)->get();
         $profixcost = profixcost::whereIn('pro_id', $produces)->get();
         $prorevenue = prorevenue::whereIn('pro_id', $produces)->get();
@@ -495,5 +501,51 @@ class BuController extends Controller
         $buprofitshare->delete();
 
         return redirect()->back()->with('success', 'Delete profix share successful.');
+    }
+
+    public function getPDF($id) {
+        $data = [
+            'produce' => produce::where('bu_id', $id)->get(),
+            'bu' => bu::where('id', $id)->first(),
+        ];
+        $pdf = PDF::loadView('produce', $data);
+  
+        return $pdf->download('Produce.pdf');
+    }
+
+    public function postImportProduce(Request $request) {
+        // $this->validate($request,
+        // [
+        //     'select_file' => 'required|mimes:xls.xlsx'
+        // ]);
+        $path = $request->file('select_file')->getRealPath();
+        $data = Excel::load($path)->get();
+        if(count($data) > 0) {
+            foreach($data->toArray() as $Key => $value) {
+                    $insert_data[] = array(
+                        'name' => $value['name'],
+                        'code' => $value['code'],
+                        'address' => $value['address'],
+                        'follow' => $value['follow'],
+                        'mail' => $value['mail'],
+                        'phone' => $value['phone'],
+                    );
+            }
+        }
+        DB::table('produce')->insert($insert_data);
+        // $produce = produce::where('bu_id', 3)->get();
+        // (new FastExcel($produce))->export('file.xlsx');
+        // // $produce = (new FastExcel)->import('file.xlsx');
+        // $produce = (new FastExcel)->import('file.xlsx', function ($line) {
+        //     return User::create([
+        //         'name' => $line['Name'],
+        //         'code' => $line['Code'],
+        //         'address' => $line['Address'],
+        //         'follow' => $line['Follow'],
+        //         'mail' => $line['Mail'],
+        //         'phone' => $line['phone'],
+        //     ]);
+        // });
+        return redirect()->back()->with('success', 'Import successful.');
     }
 }

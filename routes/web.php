@@ -37,6 +37,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:supperadmin,ad
 		Route::get('delete-revenue/{id}', 'BuController@getDeleteRevenue')->name('delete.revenue');
 		Route::post('add-profit/{id}', 'BuController@postAddProfit');
 		Route::get('delete-profix/{id}', 'BuController@getDeleteProfix')->name('delete.profix');
+		Route::get('excel.produce/{id}', 'export\ExportProController@getExcelProduce')->name('admin.bu.export.produce');
+		Route::get('excel.produce.variable', 'export\ExportBu_Pro_VariableController@getExcel')->name('admin.bu.export.produce.variable');
+		Route::get('pdf/{id}', 'BuController@getPDF')->name('admin.bu.pdf.produce');
+		Route::post('import', 'BuController@postImportProduce');
 	});
 
 	Route::group(['prefix' => 'produce'], function(){

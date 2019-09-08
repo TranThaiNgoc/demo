@@ -195,8 +195,20 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-2">
-                                <a href="" class="btn btn-default btn-block">Export</a>
+                                <a href="{{ route('admin.bu.export.produce',['id'=>$bu->id]) }}"
+                                    class="btn btn-default btn-block">Export</a>
                             </div>
+                            <div class="col-md-2">
+                                <a href="{{ route('admin.bu.pdf.produce', ['id'=>$bu->id]) }}" class="btn btn-default btn-block">PDF</a>
+                            </div>
+                            <form action="{{ url('admin/bu/import') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                                <div class="col-md-2">
+                                    <input type="file" name="select_file" class="form-control">
+                                    <input type="submit" value="Import" class="form-control">
+                                    <span class="text-danger">{{ $errors->first('select_file') }}</span>
+                                </div>
+                            </form>
                         </div>
                         <br>
                         <div>
@@ -221,9 +233,9 @@
                                                 <td>{{ $value->name }}</td>
                                                 <td>{{ $value->code }}</td>
                                                 <td>
-                                                @foreach(@$procategory as $pro)
-                                                {{ ($value->procategory_id == $pro->id) ? $pro->name : '' }}
-                                                @endforeach
+                                                    @foreach(@$procategory as $pro)
+                                                    {{ ($value->procategory_id == $pro->id) ? $pro->name : '' }}
+                                                    @endforeach
                                                 </td>
                                                 <td>{{ $value->follow }}</td>
                                                 <td>
@@ -360,7 +372,9 @@
 
                         <div class="row">
                             <div class="col-md-2">
-                                <a href="" class="btn btn-default btn-block">Export</a>
+                                <a href="#"
+                                    class="btn btn-default btn-block">Export</a>
+
                             </div>
                         </div>
                         <br>
@@ -387,14 +401,14 @@
                                                 <td>{{ $value->item }}</td>
                                                 <td>{{ $value->docnum }}</td>
                                                 <td>
-                                                @foreach(@$itemcart as $item)
-                                                {{($item->id==$value->itemcategory_id) ? $item->name : ''}}
-                                                @endforeach
+                                                    @foreach(@$itemcart as $item)
+                                                    {{($item->id==$value->itemcategory_id) ? $item->name : ''}}
+                                                    @endforeach
                                                 </td>
                                                 <td>
-                                                @foreach(@$costcart as $cost)
-                                                {{($cost->id==$value->costcategory_id) ? $item->name : ''}}
-                                                @endforeach
+                                                    @foreach(@$costcart as $cost)
+                                                    {{($cost->id==$value->costcategory_id) ? $item->name : ''}}
+                                                    @endforeach
                                                 </td>
                                                 <td>{{ date('Y-m-d',strtotime($value->created_at)) }}</td>
                                                 <td>{{ number_format($value->total,0,',','.') }} đ</td>
@@ -611,19 +625,19 @@
                                         <tbody>
                                             <?php $i=0; ?>
                                             @foreach(@$profixcost as $value)
-                                             <tr>
+                                            <tr>
                                                 <td>{{++$i}}</td>
                                                 <td>{{ $value->item }}</td>
                                                 <td>{{ $value->docnum }}</td>
                                                 <td>
-                                                @foreach(@$itemcart as $item)
-                                                {{($item->id==$value->itemcategory_id) ? $item->name : ''}}
-                                                @endforeach
+                                                    @foreach(@$itemcart as $item)
+                                                    {{($item->id==$value->itemcategory_id) ? $item->name : ''}}
+                                                    @endforeach
                                                 </td>
                                                 <td>
-                                                @foreach(@$costcart as $cost)
-                                                {{($cost->id==$value->costcategory_id) ? $item->name : ''}}
-                                                @endforeach
+                                                    @foreach(@$costcart as $cost)
+                                                    {{($cost->id==$value->costcategory_id) ? $item->name : ''}}
+                                                    @endforeach
                                                 </td>
                                                 <td>{{ date('Y-m-d',strtotime($value->created_at)) }}</td>
                                                 <td>{{ number_format($value->total,0,',','.') }} đ</td>
@@ -813,9 +827,9 @@
                                                 <td>{{++$i}}</td>
                                                 <td>{{ $value->name }}</td>
                                                 <td>
-                                                @foreach(@$itemcart as $item)
-                                                {{($item->id==$value->cart_item) ? $item->name : ''}}
-                                                @endforeach
+                                                    @foreach(@$itemcart as $item)
+                                                    {{($item->id==$value->cart_item) ? $item->name : ''}}
+                                                    @endforeach
                                                 </td>
                                                 <td>{{ number_format($value->amount,0,',','.') }} đ</td>
                                                 <td>
