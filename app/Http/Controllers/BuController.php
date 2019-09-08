@@ -23,6 +23,7 @@ use DB;
 use Excel;
 use Rap2hpoutre\FastExcel\FastExcel;
 use PDF;
+use Carbon\Carbon;
 
 class BuController extends Controller
 {
@@ -547,5 +548,87 @@ class BuController extends Controller
         //     ]);
         // });
         return redirect()->back()->with('success', 'Import successful.');
+    }
+
+    public function getChart($id) {
+        $bu = bu::where('id', $id)->first();
+        if(is_null($bu)) {
+            abort('404');
+        }
+        $bu_variable = 0;
+        $bu_fixed = 0;
+        $bu_burevenue = 0;
+        $bu_buprofitshare = 0;
+        $bu_variable_ = buvarcost::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
+        $bu_fixed_ = bufixcost::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
+        $bu_burevenue_ = burevenue::where('bu_id', $id)->where('created_at', date(now()))->select('amount')->get();
+        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
+        foreach($bu_variable_ as $key => $value) {
+            $bu_variable += ($value->total);
+        }
+        foreach($bu_fixed_ as $key => $value) {
+            $bu_fixed += ($value->total);
+        }
+        foreach($bu_burevenue_ as $key => $value) {
+            $bu_burevenue += ($value->amount);
+        }
+        foreach($bu_buprofitshare_ as $key => $value) {
+            $bu_buprofitshare += ($value->total);
+        }
+        $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
+        $cost = $bu_variable + $bu_fixed;
+        $data = [
+            'bu' => $bu,
+            'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
+            'bu_burevenue' => ($total > 0) ? round($bu_burevenue/($total)*100) : 0,
+            'bu_buprofitshare' => ($total > 0) ? round($bu_buprofitshare/($total)*100) : 0,
+        ];
+        return view('admin.themes.bu.chart', $data);
+    }
+
+    public function postChart(Request $request, $id) {
+        $this->validate($request,
+        [
+            'start_day' => 'required|max:10',
+			'end_day' => 'required|date|min:10|max:10',
+        ],
+        [
+            'start_day.max' => 'Invalid start date selected.',
+            'start_day.required' => 'The start date selection must not be blank.',
+            'end_day.required' => 'The end date selection must not be blank.',
+            'end_day.date' => 'Invalid end date selected.',
+            'end_day.min' => 'Invalid end date selected.',
+            'end_day.max' => 'Invalid end date selected.',
+        ]);
+        $start_day = Carbon::parse($request->start_day)->startOfDay()->toDateTimeString();
+        $end_day = Carbon::parse($request->end_day)->startOfDay()->toDateTimeString();
+        $bu_variable = 0;
+        $bu_fixed = 0;
+        $bu_burevenue = 0;
+        $bu_buprofitshare = 0;
+        $bu_variable_ = buvarcost::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
+        $bu_fixed_ = bufixcost::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
+        $bu_burevenue_ = burevenue::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('amount')->get();
+        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
+        foreach($bu_variable_ as $key => $value) {
+            $bu_variable += ($value->total);
+        }
+        foreach($bu_fixed_ as $key => $value) {
+            $bu_fixed += ($value->total);
+        }
+        foreach($bu_burevenue_ as $key => $value) {
+            $bu_burevenue += ($value->amount);
+        }
+        foreach($bu_buprofitshare_ as $key => $value) {
+            $bu_buprofitshare += ($value->total);
+        }
+        $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
+        $cost = $bu_variable + $bu_fixed;
+        $data = [
+            'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
+            'bu_burevenue' => round($bu_burevenue/($total)*100),
+            'bu_buprofitshare' => round($bu_buprofitshare/($total)*100),
+        ];
+        return view('admin.themes.bu.chart', $data)->render();
     }
 }

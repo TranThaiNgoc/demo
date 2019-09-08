@@ -241,7 +241,7 @@
                                                 <td>
                                                     <a href="{{ route('edit.produce', ['bu' => $bu->id,'id' => $value->id]) }}"
                                                         class="btn btn-warning">Detail</a>
-                                                    <a href="{{ route('delete.produce',['id' => $value->id]) }}"
+                                                    <a href="{{ route('bu.delete.produce',['id' => $value->id]) }}"
                                                         class="btn btn-danger"
                                                         onclick="return confirm('Are you sure you want to delete ?')">
                                                         Delete</a>
@@ -472,7 +472,7 @@
                                                 <td>{{ number_format($value->total,0,',','.') }} đ</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
-                                                    <a href="{{ route('delete.variable',['id'=>$value->id]) }}"
+                                                    <a href="{{ route('bu.delete.variable',['id'=>$value->id]) }}"
                                                         class="btn btn-danger"
                                                         onclick="return confirm('Are you sure you want to delete ?')">
                                                         Delete</a>
@@ -701,7 +701,7 @@
                                                 <td>{{ number_format($value->total,0,',','.') }} đ</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
-                                                    <a href="{{ route('delete.fixed',['id'=>$value->id]) }}"
+                                                    <a href="{{ route('bu.delete.fixed',['id'=>$value->id]) }}"
                                                         class="btn btn-danger"
                                                         onclick="return confirm('Are you sure you want to delete ?')">
                                                         Delete</a>
@@ -886,7 +886,7 @@
                                                 <td>{{ number_format($value->amount,0,',','.') }} đ</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
-                                                    <a href="{{ route('delete.revenue', ['id' => $value->id]) }}"
+                                                    <a href="{{ route('bu.delete.revenue', ['id' => $value->id]) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
@@ -1089,7 +1089,7 @@
                                                 <td>{{ number_format($value->amount,0,',','.') }} đ</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
-                                                    <a href="{{ route('delete.profix',['id' => $value->id]) }}"
+                                                    <a href="{{ route('bu.delete.profix',['id' => $value->id]) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>

@@ -132,7 +132,7 @@
                         <a class="btn btn-warning" href="{{ route('bu.edit', ['id'=>$b->id]) }}">Info</a>
                         <a class="btn btn-danger" href="{{ route('bu.delete', ['id'=>$b->id]) }}">Delete</a>
                         <a class="btn btn-info" href="{{ route('bu.detail', ['id'=>$b->id]) }}">Detail</a>
-                        <a class="btn btn-info" href="bu/{{ $b->id }}/report">Report</a>
+                        <a class="btn btn-info" href="{{ route('bu.chart',['id'=>$b->id]) }}">Report</a>
                     </div>
 
                 </div>

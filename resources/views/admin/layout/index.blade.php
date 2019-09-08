@@ -97,6 +97,8 @@
         <!-- ============================================================== -->
         <!-- All Jquery -->
         <!-- ============================================================== -->
+        @stack('js')
+        
 
         <script src="{{ asset('plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
         <!-- Bootstrap Core JavaScript -->
@@ -144,7 +146,6 @@
 
         </script>
 
-        @yield('script')
 
         <script src="{{ asset('admin/datatable/jquery.dataTables.min.js') }}"></script>
 
