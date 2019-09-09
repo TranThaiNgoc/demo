@@ -3,14 +3,14 @@
  <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav slimscrollsidebar">
         <div class="sidebar-head">
-            <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3>
+            <h3><span class="fa-fw open-close"><i class="fas fa-bars"></i></span> <span class="hide-menu">Navigation</span></h3>
         </div>
         <ul class="nav" id="side-menu">
             <li style="padding: 70px 0 0;">
                 {{-- <a href="{{ url('/bu/list') }}" class="waves-effect"><i class="fa fa-home fa-fw" aria-hidden="true"></i>@lang('home.Home')</a> --}}
             </li>
             <li>
-            <a class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i>BU</a>
+            <a class="waves-effect"><i class="fa fa-globe" aria-hidden="true"></i>BU</a>
                 <ul style="list-style-type: none" id="side-menu">
                     <li>
                         <a href="{{ route('bu.list') }}" class="waves-effect">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - BU list</a>

@@ -555,6 +555,51 @@ class BuController extends Controller
         if(is_null($bu)) {
             abort('404');
         }
+        $one_week = Carbon::now()->subWeeks(2);
+        // $two_week = Carbon::now()->subDays(1);
+        $two_week = Carbon::now()->subWeeks(1);
+        $one_week_ago = Carbon::now()->subDays(1);
+
+        $one_week_bu = DB::table('bufixcost')
+        ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
+        ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
+        ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
+        ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
+        ->where('bufixcost.created_at', '>=', $one_week)->where('bufixcost.created_at', '<=', $two_week)
+        ->where('buvarcost.created_at', '>=', $one_week)->where('buvarcost.created_at', '<=', $two_week)
+        ->where('buprofitshare.created_at', '>=', $one_week)->where('buprofitshare.created_at', '<=', $two_week)
+        ->where('burevenue.created_at', '>=', $one_week)->where('burevenue.created_at', '<=', $two_week)
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        $one_week_variable = 0;
+        $one_week_fixed = 0;
+        $one_week_revenue = 0;
+        $one_week_profixshare = 0;
+        foreach($one_week_bu as $key => $value) {
+            $one_week_variable += ($value->buvarcost_total);
+            $one_week_fixed += ($value->bufixcost_total);
+            $one_week_revenue += ($value->burevenue_total);
+            $one_week_profixshare += ($value->buprofitshare_total);
+        }
+        $two_week_bu = DB::table('bufixcost')
+        ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
+        ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
+        ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
+        ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
+        ->where('bufixcost.created_at', '>=', $two_week)->where('bufixcost.created_at', '<=', $one_week_ago)
+        ->where('buvarcost.created_at', '>=', $two_week)->where('buvarcost.created_at', '<=', $one_week_ago)
+        ->where('buprofitshare.created_at', '>=', $two_week)->where('buprofitshare.created_at', '<=', $one_week_ago)
+        ->where('burevenue.created_at', '>=', $two_week)->where('burevenue.created_at', '<=', $one_week_ago)
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        $two_week_variable = 0;
+        $two_week_fixed = 0;
+        $two_week_revenue = 0;
+        $two_week_profixshare = 0;
+        foreach($two_week_bu as $key => $value) {
+            $two_week_variable += ($value->buvarcost_total);
+            $two_week_fixed += ($value->bufixcost_total);
+            $two_week_revenue += ($value->burevenue_total);
+            $two_week_profixshare += ($value->buprofitshare_total);
+        }
         $bu_variable = 0;
         $bu_fixed = 0;
         $bu_burevenue = 0;
@@ -577,7 +622,19 @@ class BuController extends Controller
         }
         $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
         $cost = $bu_variable + $bu_fixed;
+        $total_one_week = $one_week_variable + $one_week_fixed + $one_week_revenue + $one_week_profixshare;
+        $total_two_week = $two_week_variable + $two_week_fixed + $two_week_revenue + $two_week_profixshare;
+        $one_week_cost = $one_week_variable + $one_week_fixed;
+        $two_week_cost = $two_week_variable + $two_week_fixed;
         $data = [
+            'one_week_cost' => ($one_week_cost) ? round($one_week_cost/($total_one_week)*100) : 0,
+            'one_week_revenue' => ($one_week_revenue) ? round($one_week_revenue/($total_one_week)*100) : 0,
+            'one_week_profixshare' => ($one_week_profixshare) ? round($one_week_profixshare/($total_one_week)*100) : 0,
+            'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
+            'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
+            'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
+            'date_one' => date('d-m-Y', strtotime($one_week)),
+            'date_two' => date('d-m-Y', strtotime($two_week)),
             'bu_variable' => $bu_variable,
             'bu_fixed' => $bu_fixed,
             'bu' => $bu,
@@ -602,6 +659,51 @@ class BuController extends Controller
             'end_day.min' => 'Invalid end date selected.',
             'end_day.max' => 'Invalid end date selected.',
         ]);
+        $one_week = Carbon::now()->subWeeks(2);
+        // $two_week = Carbon::now()->subDays(1);
+        $two_week = Carbon::now()->subWeeks(1);
+        $one_week_ago = Carbon::now()->subDays(1);
+
+        $one_week_bu = DB::table('bufixcost')
+        ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
+        ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
+        ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
+        ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
+        ->where('bufixcost.created_at', '>=', $one_week)->where('bufixcost.created_at', '<=', $two_week)
+        ->where('buvarcost.created_at', '>=', $one_week)->where('buvarcost.created_at', '<=', $two_week)
+        ->where('buprofitshare.created_at', '>=', $one_week)->where('buprofitshare.created_at', '<=', $two_week)
+        ->where('burevenue.created_at', '>=', $one_week)->where('burevenue.created_at', '<=', $two_week)
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        $one_week_variable = 0;
+        $one_week_fixed = 0;
+        $one_week_revenue = 0;
+        $one_week_profixshare = 0;
+        foreach($one_week_bu as $key => $value) {
+            $one_week_variable += ($value->buvarcost_total);
+            $one_week_fixed += ($value->bufixcost_total);
+            $one_week_revenue += ($value->burevenue_total);
+            $one_week_profixshare += ($value->buprofitshare_total);
+        }
+        $two_week_bu = DB::table('bufixcost')
+        ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
+        ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
+        ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
+        ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
+        ->where('bufixcost.created_at', '>=', $two_week)->where('bufixcost.created_at', '<=', $one_week_ago)
+        ->where('buvarcost.created_at', '>=', $two_week)->where('buvarcost.created_at', '<=', $one_week_ago)
+        ->where('buprofitshare.created_at', '>=', $two_week)->where('buprofitshare.created_at', '<=', $one_week_ago)
+        ->where('burevenue.created_at', '>=', $two_week)->where('burevenue.created_at', '<=', $one_week_ago)
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        $two_week_variable = 0;
+        $two_week_fixed = 0;
+        $two_week_revenue = 0;
+        $two_week_profixshare = 0;
+        foreach($two_week_bu as $key => $value) {
+            $two_week_variable += ($value->buvarcost_total);
+            $two_week_fixed += ($value->bufixcost_total);
+            $two_week_revenue += ($value->burevenue_total);
+            $two_week_profixshare += ($value->buprofitshare_total);
+        }
         $start_day = Carbon::parse($request->start_day)->startOfDay()->toDateTimeString();
         $end_day = Carbon::parse($request->end_day)->startOfDay()->toDateTimeString();
         $bu_variable = 0;
@@ -626,7 +728,19 @@ class BuController extends Controller
         }
         $total = $bu_variable + $bu_fixed + $bu_buprofitshare;
         $cost = $bu_variable + $bu_fixed;
+        $total_one_week = $one_week_variable + $one_week_fixed + $one_week_revenue + $one_week_profixshare;
+        $total_two_week = $two_week_variable + $two_week_fixed + $two_week_revenue + $two_week_profixshare;
+        $one_week_cost = $one_week_variable + $one_week_fixed;
+        $two_week_cost = $two_week_variable + $two_week_fixed;
         $data = [
+            'one_week_cost' => ($one_week_cost) ? round($one_week_cost/($total_one_week)*100) : 0,
+            'one_week_revenue' => ($one_week_revenue) ? round($one_week_revenue/($total_one_week)*100) : 0,
+            'one_week_profixshare' => ($one_week_profixshare) ? round($one_week_profixshare/($total_one_week)*100) : 0,
+            'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
+            'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
+            'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
+            'date_one' => date('d-m-Y', strtotime($one_week)),
+            'date_two' => date('d-m-Y', strtotime($two_week)),
             'bu_variable' => ($total > 0) ? round($bu_variable/($total)*100) : 0,
             'bu_fixed' => ($total > 0) ? round($bu_fixed/($total)*100) : 0,
             'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
