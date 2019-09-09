@@ -54,9 +54,9 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
     var data = google.visualization.arrayToDataTable([
         ['Task', 'Hours per Day'],
-        ['Cost', {{$cost}}],
-        ['Revenue', {{$bu_burevenue}}],
-        ['Profit', {{$bu_buprofitshare}}],
+        ['Variable Cost', {{$bu_variable}}],
+        ['Fixed Cost', {{$bu_fixed}}],
+        ['Profit Share', {{$bu_buprofitshare}}],
     ]);
 
     // Optional; add a title and set the width and height of the chart

@@ -562,7 +562,7 @@ class BuController extends Controller
         $bu_variable_ = buvarcost::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
         $bu_fixed_ = bufixcost::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
         $bu_burevenue_ = burevenue::where('bu_id', $id)->where('created_at', date(now()))->select('amount')->get();
-        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->where('created_at', date(now()))->select('total')->get();
+        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->where('created_at', date(now()))->select('amount')->get();
         foreach($bu_variable_ as $key => $value) {
             $bu_variable += ($value->total);
         }
@@ -578,6 +578,8 @@ class BuController extends Controller
         $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
         $cost = $bu_variable + $bu_fixed;
         $data = [
+            'bu_variable' => $bu_variable,
+            'bu_fixed' => $bu_fixed,
             'bu' => $bu,
             'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
             'bu_burevenue' => ($total > 0) ? round($bu_burevenue/($total)*100) : 0,
@@ -609,7 +611,7 @@ class BuController extends Controller
         $bu_variable_ = buvarcost::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
         $bu_fixed_ = bufixcost::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
         $bu_burevenue_ = burevenue::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('amount')->get();
-        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('total')->get();
+        $bu_buprofitshare_ = buprofitshare::where('bu_id', $id)->whereBetween('created_at', [$start_day,$end_day])->select('amount')->get();
         foreach($bu_variable_ as $key => $value) {
             $bu_variable += ($value->total);
         }
@@ -620,11 +622,13 @@ class BuController extends Controller
             $bu_burevenue += ($value->amount);
         }
         foreach($bu_buprofitshare_ as $key => $value) {
-            $bu_buprofitshare += ($value->total);
+            $bu_buprofitshare += ($value->amount);
         }
-        $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
+        $total = $bu_variable + $bu_fixed + $bu_buprofitshare;
         $cost = $bu_variable + $bu_fixed;
         $data = [
+            'bu_variable' => ($total > 0) ? round($bu_variable/($total)*100) : 0,
+            'bu_fixed' => ($total > 0) ? round($bu_fixed/($total)*100) : 0,
             'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
             'bu_burevenue' => round($bu_burevenue/($total)*100),
             'bu_buprofitshare' => round($bu_buprofitshare/($total)*100),
