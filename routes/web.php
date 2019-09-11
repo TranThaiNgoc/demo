@@ -11,12 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:supperadmin,admin']],function(){
+Route::group(['prefix' => '/', 'middleware' => ['auth', 'role:supperadmin,admin']],function(){
 	Route::get('/','HomeController@getAdmin')->name('admin');
 
 	Route::group(['prefix' => 'bu'], function(){

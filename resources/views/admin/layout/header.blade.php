@@ -38,9 +38,7 @@
                 </form>
             </li>
             <li>
-                <a class="profile-pic" href="{{ url('user/edit/'.Auth::user()->id) }}"> <img
-                        src="{{ asset('../plugins/images/users/hai.png') }}" alt="user-img" width="36"
-                        class="img-circle"><b class="hidden-xs">{{Auth::user()->name}}</b></a>
+                <a class="profile-pic" href="{{ url('user/edit/'.Auth::user()->id) }}"> <b class="hidden-xs">{{Auth::user()->name}}</b></a>
             </li>
         </ul>
     </div>

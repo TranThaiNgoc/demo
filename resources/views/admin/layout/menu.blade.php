@@ -10,7 +10,7 @@
                 {{-- <a href="{{ url('/bu/list') }}" class="waves-effect"><i class="fa fa-home fa-fw" aria-hidden="true"></i>@lang('home.Home')</a> --}}
             </li>
             <li>
-            <a class="waves-effect"><i class="fa fa-globe" aria-hidden="true"></i>BU</a>
+            <a class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i>BU</a>
                 <ul style="list-style-type: none" id="side-menu">
                     <li>
                         <a href="{{ route('bu.list') }}" class="waves-effect">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - BU list</a>

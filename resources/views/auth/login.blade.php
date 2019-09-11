@@ -1,86 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Khóa Học Lập Trình Laravel Framework 5.x Tại Khoa Phạm">
-    <meta name="author" content="">
-
-    <title>Admin - Khoa Phạm</title>
-    <base href="{{asset('')}}">
-
-    <!-- Bootstrap Core CSS -->
-    <link href="admin_asset/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
-    <link href="admin_asset/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="admin_asset/dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="admin_asset/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-</head>
-
-<body>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Đăng nhập tài khoản</h3>
+@extends('layouts.admin.master_login')
+@section('title')
+login
+@endsection
+@section('content')
+    <div class="login-box">
+        <div class="login-logo" style="text-align: center;">
+            <h1 style="font-family: Garamond">Finance System</h1>
+            <h5>(Demo version)</h5>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <form method="POST" action="{{ route('login') }}">
+                {{ csrf_field() }}
+                
+                @if(session('info'))
+                    <div class="alert alert-danger">
+                        {{ session('info') }}
                     </div>
-                    <div class="panel-body">
-                        <!--hien thi thong bao loi-->
-                        @if(count($errors) > 0)
-                            <div class="alert alert-danger">
-                                @foreach($errors->all() as $err)
-                                {{$err}}<br>
-                                @endforeach
-                            </div>
-                        @endif
-                        <!--update thanh cong-->
-                        @if(session('thongbao'))
-                            {{session('thongbao')}}</div>
-                        @endif
-                        <form role="form" action="{{ route('login') }}" method="POST">
-                            <fieldset>
-                                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                </div>
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Đăng nhập</button>
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Quên mật khẩu') }}
-                                    </a>
-                                @endif
-                            </fieldset>
-                        </form>
-                    </div>
+                @endif
+
+                <div class="form-group{{ $errors->has('email') ? ' has-feedback' : '' }}">
+                    <input type="text" class="form-control" placeholder="Login email" name="email" value="{{ old('email') }}" autofocus>
                 </div>
-            </div>
+                <div class="form-group{{ $errors->has('password') ? ' has-feedback' : '' }}">
+                    <input type="password" class="form-control" placeholder="Password" name="password">
+                </div>
+                @if ($errors->any())
+                    <br/>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @if (Session::has('error'))
+               <br />
+                    <div class="alert alert-danger" role="alert">{{ Session::get('error') }}</div>
+                @endif
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block btn-flat">Login</button>
+                    <br>
+                    <a href="{{ url('register') }}"> Register an admin account? Click Here</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="admin_asset/bower_components/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="admin_asset/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="admin_asset/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="admin_asset/dist/js/sb-admin-2.js"></script>
-
-</body>
-
-</html>
+@endsection

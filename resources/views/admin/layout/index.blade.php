@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <base href="{{asset('')}}"> 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('plugins/images/favicon.png') }}">
     <title>@yield('title')</title>
+    <base href="{{asset('')}}"> 
     @section('styles')
     <!-- Bootstrap Core CSS -->
     
@@ -27,6 +27,7 @@
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- color CSS -->
     <link href="{{ asset('css/colors/default.css') }}" id="theme" rel="stylesheet">
 
