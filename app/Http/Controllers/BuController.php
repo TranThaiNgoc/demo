@@ -30,13 +30,13 @@ class BuController extends Controller
     public function getList() {
         $data = [
             'bu' => bu::all(),
-            'bucategory' => bucategory::all(),
+            'bucategory' => bucategory::where('is_deleted', 0)->get(),
         ];
         return view('admin.themes.bu.list', $data);
     }
 
     public function getAdd() {
-        $bucategory = bucategory::all();
+        $bucategory = bucategory::where('is_deleted', 0)->get();
         return view('admin.themes.bu.add', compact('bucategory'));
     }
 
@@ -72,7 +72,7 @@ class BuController extends Controller
             'phone.regex' => 'invalid phone number.',
             'remark.required' => 'Remark may not be blank.',
         ]);
-        $bucategory_ = bucategory::all();
+        $bucategory_ = bucategory::where('is_deleted', 0)->get();
         foreach($bucategory_ as $key => $value) {
             $bucategory[$value->id] = $value;
         }
@@ -132,7 +132,7 @@ class BuController extends Controller
             'phone.regex' => 'invalid phone number.',
             'remark.required' => 'Remark may not be blank.',
         ]);
-        $bucategory_ = bucategory::all();
+        $bucategory_ = bucategory::where('is_deleted', 0)->get();
         foreach($bucategory_ as $key => $value) {
             $bucategory[$value->id] = $value;
         }
@@ -158,7 +158,7 @@ class BuController extends Controller
     }
 
     public function getEdit($id) {
-        $bucategory = bucategory::all();
+        $bucategory = bucategory::where('is_deleted', 0)->get();
         $bu = bu::find($id);
         if(is_null($bu)) {
             abort('404');
@@ -199,7 +199,7 @@ class BuController extends Controller
             $total_profitshare += ($value->amount);
         }
         $data = [
-            'bucategory' => bucategory::all(),
+            'bucategory' => bucategory::where('is_deleted', 0)->get(),
             'bu' => $bu,
             'procategory' => procategory::all(),
             'produce' => $produce,

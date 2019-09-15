@@ -78,7 +78,6 @@ function drawChart_() {
           ['Year', 'Cost', 'Revenue', 'Profix', ],
           ['{{ $date_one }}', {{$one_week_cost}}, {{$one_week_revenue}}, {{$one_week_profixshare}}],
           ['{{ $date_two }}', {{$two_week_cost}}, {{$two_week_revenue}}, {{$two_week_profixshare}}],
-          ['{{ $date_two }}', {{$two_week_cost}}, {{$two_week_revenue}}, {{$two_week_profixshare}}],
         ]);
 
         var options_ = {

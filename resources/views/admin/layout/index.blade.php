@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <base href="{{asset('')}}"> 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('plugins/images/favicon.png') }}">
     <title>@yield('title')</title>
-    <base href="{{asset('')}}"> 
     @section('styles')
     <!-- Bootstrap Core CSS -->
     
@@ -35,7 +35,6 @@
 
     <!-- DataTables Responsive CSS -->
     <link href="{{ asset('admin/datatable/jquery.dataTables.min.css') }}" id="theme" rel="stylesheet">
-    <link href="{{ asset('vendor/swatkins/gantt/css/gantt.css') }}" rel="stylesheet" type="text/css">
 
     @show
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -126,8 +125,8 @@
 
         <!-- DataTables JavaScript -->
         
-        <script type="text/javascript" language="javascript" src="{{ asset('admin/ckeditor/ckeditor.js') }}" ></script>
-        <script type="text/javascript" language="javascript" src="{{ asset('admin/ckfinder/ckfinder.js') }}" ></script>
+        <script type="text/javascript" language="javascript" src="{{ asset('ckeditor/ckeditor.js') }}" ></script>
+        <script type="text/javascript" language="javascript" src="{{ asset('ckeditor/ckfinder/ckfinder.js') }}" ></script>
 
         <script type="text/javascript">
             CKEDITOR.replace( 'ckeditor_add',
@@ -148,7 +147,7 @@
         </script>
 
 
-        <script src="{{ asset('admin/datatable/jquery.dataTables.min.js') }}"></script>
+        <!-- <script src="{{ asset('admin/datatable/jquery.dataTables.min.js') }}"></script> -->
 
         <!-- <script>
             $(document).ready(function() {

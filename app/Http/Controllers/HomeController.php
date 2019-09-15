@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use Session;
+use App\bu;
+use App\bucategory;
 
 class HomeController extends Controller
 {
@@ -26,6 +28,10 @@ class HomeController extends Controller
      */
     public function getAdmin()
     {
-        return view('admin.layout.index');
+        $data = [
+            'bu' => bu::all(),
+            'bucategory' => bucategory::where('is_deleted', 0)->get(),
+        ];
+        return view('admin.themes.bu.list', $data);
     }
 }

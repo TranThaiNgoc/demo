@@ -18,7 +18,7 @@
                 </ul>
             </li>
             <li>
-                <a class="waves-effect"><i class="fa fa fa-cogs fa-fw" aria-hidden="true"></i>@lang('cfg.Config')</a>
+                <a class="waves-effect"><i class="fa fa fa-cogs fa-fw" aria-hidden="true"></i>@lang('Setting')</a>
                 <ul style="list-style-type: none" id="side-menu">
                     <li>
                         <a href="{{ route('admin.bucategory.list') }}"  class="waves-effect">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - BU Category</a>

@@ -7,9 +7,9 @@
             <a class="logo">
                 <!-- Logo icon image, you can use font-icon also --><b>
                     <!--This is dark logo icon-->
-                    <img src="{{ asset('../plugins/images/admin-logo.png') }}" alt="home" class="dark-logo" />
+                    <img src="{{ asset('plugins/images/admin-logo.png') }}" alt="home" class="dark-logo" />
                     <!--This is light logo icon-->
-                    <img src="{{ asset('../plugins/images/admin-logo-dark.png') }}" alt="home" class="light-logo" />
+                    <img src="{{ asset('plugins/images/admin-logo-dark.png') }}" alt="home" class="light-logo" />
                 </b>
                 <!-- Logo text image you can use text also --><span class="hidden-xs"
                     style="color:#54667a;font-weight:bold">
