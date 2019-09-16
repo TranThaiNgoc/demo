@@ -33,8 +33,7 @@
                             rows="10">{{ old('remark') }}</textarea>
                         <span class="text-danger">{{ $errors->first('remark') }}</span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Bu Category</button>
-                    <input type="reset" class="btn btn-default" value="reset" readonly>
+                    <button type="submit" class="btn btn-primary">Create</button>
                     <form>
             </div>
         </div>

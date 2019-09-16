@@ -1,6 +1,6 @@
 @extends('admin.layout.index')
 @section('title')
-Produce: sdfg
+@section('name', $pro->name)
 @endsection
 @section('content')
 
@@ -34,7 +34,7 @@ Produce: sdfg
             <div class="white-box">
                 <div>
                     <form class="form-horizontal"
-                        action="{{ url('admin/produce/edit-produce',['bu' => $bu->id, 'id' => $pro->id]) }}"
+                        action="{{ url('produce/edit-produce',['bu' => $bu->id, 'id' => $pro->id]) }}"
                         method="POST">
                         @csrf
                         <div class="form-group">
@@ -125,7 +125,7 @@ Produce: sdfg
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/produce/add-proline', ['bu'=>$bu->id,'id' => $pro->id]) }}"
+                                    action="{{ url('produce/add-proline', ['bu'=>$bu->id,'id' => $pro->id]) }}"
                                     method="POST">
                                     @csrf
 
@@ -278,7 +278,7 @@ Produce: sdfg
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/produce/add-variable',['bu' => $bu->id, 'id' => $pro->id]) }}"
+                                    action="{{ url('produce/add-variable',['bu' => $bu->id, 'id' => $pro->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">
@@ -520,7 +520,7 @@ Produce: sdfg
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/produce/add-fixed', ['bu' => $bu->id, 'id' => $pro->id]) }}"
+                                    action="{{ url('produce/add-fixed', ['bu' => $bu->id, 'id' => $pro->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">
@@ -760,7 +760,7 @@ Produce: sdfg
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/produce/add-revenue', ['bu' => $bu->id, 'id'=> $pro->id]) }}"
+                                    action="{{ url('produce/add-revenue', ['bu' => $bu->id, 'id'=> $pro->id]) }}"
                                     method="post">
                                     @csrf
                                     <div class="form-group">
@@ -945,7 +945,7 @@ Produce: sdfg
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/produce/add-profix', ['bu'=>$bu->id,'id'=>$pro->id]) }}"
+                                    action="{{ url('produce/add-profix', ['bu'=>$bu->id,'id'=>$pro->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">

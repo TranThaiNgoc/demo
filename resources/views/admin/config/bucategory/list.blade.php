@@ -6,7 +6,6 @@
     <li class="active"><a data-toggle="tab" href="#list">List</a></li>
 </ul>
 
-
 <div class="row">
     <!--hien thi thanh cong-->
     @if(session('success'))
@@ -23,7 +22,7 @@
                 <form action="" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label>Add</label>
+                        <label>Name</label>
                         <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                         <span class="text-danger">{{ $errors->first('name') }}</span>
                     </div>
@@ -33,8 +32,7 @@
                             rows="10">{{ old('remark') }}</textarea>
                         <span class="text-danger">{{ $errors->first('remark') }}</span>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Bu Category</button>
-                    <input type="reset" class="btn btn-default" value="reset" readonly>
+                    <button type="submit" class="btn btn-primary">Create</button>
                     <form>
             </div>
         </div>

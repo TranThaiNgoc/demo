@@ -1,5 +1,5 @@
 @extends('admin.layout.index')
-@section('title','Add Bu - Category')
+@section('title','List Bu')
 @section('content')
 
 <!-- /row -->
@@ -110,14 +110,14 @@
                     <div class="form-group row">
                         <label class="col-sm-6 col-form-label">Produce</label>
                         <div class="col-sm-6">
-                            <h3 class="text-right"><span class="counter text-success">7</span></h3>
+                            <h3 class="text-right"><span class="counter text-success">{{ count($b->produce) }}</span></h3>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class="col-sm-6 col-form-label">Produce Line</label>
                         <div class="col-sm-6">
-                            <h3 class="text-right"><span class="counter text-success">6</span></h3>
+                            <h3 class="text-right"><span class="counter text-success">{{ count($b->proline) }}</span></h3>
                         </div>
                     </div>
 

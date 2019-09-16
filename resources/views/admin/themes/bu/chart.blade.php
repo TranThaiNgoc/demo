@@ -1,50 +1,184 @@
 @extends('admin.layout.index')
 @section('title','Chart Bu')
 @section('content')
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-8">
-                <form action="" method="post">
-                    @csrf
-                    <div class="d-flex justify-content-between">
-                        <div class="row">
-                            <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="from"><strong>Start day</strong></label>
-                                <input type="date" class="form-control" name="start_day" required>
-                                <span class="text-danger">{{ $errors->first('start_day') }}</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="from"><strong>End day</strong></label>
-                                <input type="date" class="form-control" name="end_day" required>
-                                <span class="text-danger">{{ $errors->first('end_day') }}</span>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <label for="from"><strong>Filter</strong></label>
-                                <button type="submit" class="btn btn-primary mt-4">Filter</button>
-                            </div>
-                        </div>
+<div class="tab-content">
+    <form action="" method="post">
+        @csrf
+        <div class="d-flex justify-content-between">
+            <div class="row">
+                <div class="col-md-8 offset-md-4 text-center" style="margin-left:267px;">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="from"><strong>Start day</strong></label>
+                            <input type="date" class="form-control" name="start_day" required>
+                            <span class="text-danger">{{ $errors->first('start_day') }}</span>
                         </div>
                     </div>
-                </form>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="from"><strong>End day</strong></label>
+                            <input type="date" class="form-control" name="end_day" required>
+                            <span class="text-danger">{{ $errors->first('end_day') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="from"><strong>Filter</strong></label>
+                            <button type="submit" class="btn btn-primary mt-4 form-control">Filter</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </div>
-    </div>
-        <div id="piechart"></div>
-        <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
+    </form>
 </div>
-
+    <div id="container" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
+    <div id="piechart" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>    
 @endsection
 @push('js')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
 
 <script type="text/javascript">
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'The chart of all company money, 2019'
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Total money market share'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y} Đồng</b> of total<br/>'
+    },
+
+    series: [
+        {
+            name: "Total",
+            colorByPoint: true,
+            data: [
+                {
+                    name: "Revenue",
+                    y: {{ $one_week_revenue }},
+                    drilldown: "Revenue"
+                },
+                {
+                    name: "Cost",
+                    y: {{ $one_week_cost }},
+                    drilldown: "cost"
+                },
+                {
+                    name: "Profit share",
+                    y: {{ $one_week_profixshare }},
+                    drilldown: "Profit share"
+                },
+                {
+                    name: "Profit",
+                    y: {{ $one_week_profixshare_total }},
+                    drilldown: "Profit"
+                }
+            ]
+        }
+    ],
+    drilldown: {
+        series: [
+            {
+                name: "Revenue",
+                id: "Revenue",
+                data: [
+                    [
+                        "v11.0",
+                        3.39
+                    ],
+                    [
+                        "v10.1",
+                        0.96
+                    ],
+                    [
+                        "v10.0",
+                        0.36
+                    ],
+                    [
+                        "v9.1",
+                        0.54
+                    ],
+                    [
+                        "v9.0",
+                        0.13
+                    ],
+                    [
+                        "v5.1",
+                        0.2
+                    ]
+                ]
+            },
+            {
+                name: "Cost",
+                id: "Cost",
+                data: [
+                    [
+                        "v16",
+                        2.6
+                    ],
+                    [
+                        "v15",
+                        0.92
+                    ],
+                    [
+                        "v14",
+                        0.4
+                    ],
+                    [
+                        "v13",
+                        0.1
+                    ]
+                ]
+            },
+            {
+                name: "Opera",
+                id: "Opera",
+                data: [
+                    [
+                        "v50.0",
+                        0.96
+                    ],
+                    [
+                        "v49.0",
+                        0.82
+                    ],
+                    [
+                        "v12.1",
+                        0.14
+                    ]
+                ]
+            }
+        ]
+    }
+});
+
 // Load google charts
 google.charts.load('current', {
     'packages': ['corechart']
@@ -63,7 +197,7 @@ function drawChart() {
     // Optional; add a title and set the width and height of the chart
     var options = {
         'title': 'The chart shows the structure of the company',
-        'width': 800,
+        'width': 900,
         'height': 450
     };
 
@@ -71,25 +205,5 @@ function drawChart() {
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(data, options);
 }
-google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart_);
-function drawChart_() {
-        var data_ = google.visualization.arrayToDataTable([
-          ['Year', 'Cost', 'Revenue', 'Profix', ],
-          ['{{ $date_one }}', {{$one_week_cost}}, {{$one_week_revenue}}, {{$one_week_profixshare}}],
-          ['{{ $date_two }}', {{$two_week_cost}}, {{$two_week_revenue}}, {{$two_week_profixshare}}],
-        ]);
-
-        var options_ = {
-          chart: {
-            title: 'Chart of statistics column Bu',
-            subtitle: 'Cost, Revenue, and Profix',
-          }
-        };
-
-        var chart_ = new google.charts.Bar(document.getElementById('columnchart_material'));
-
-        chart_.draw(data_, google.charts.Bar.convertOptions(options_));
-      }
 </script>
 @endpush

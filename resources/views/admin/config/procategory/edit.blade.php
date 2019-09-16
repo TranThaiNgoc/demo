@@ -1,14 +1,10 @@
 @extends('admin.layout.index')
 @section('title','Update Bu - Procategory')
 @section('content')
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">BU-Product Category
-                    <small>Update </small>
-                </h1>
-            </div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="white-box">
+            <div> 
             <!--hien thi thanh cong-->
             @if(session('success'))
                 <div class="alert alert-success">
@@ -16,7 +12,6 @@
                 </div>
             @endif
             <!-- /.col-lg-12 -->
-            <div class="col-lg-9" style="padding-bottom:120px">
                 <form action="" method="POST" enctype="multipart/form-data">
                 	@csrf
                     <div class="form-group">
@@ -29,8 +24,7 @@
                         <textarea name="remark" id="remark" cols="30" class="form-control" rows="10">{{ $procategory->remark }}</textarea>
                         <span class="text-danger">{{ $errors->first('remark') }}</span>
                     </div>
-					<button type="submit" class="btn btn-primary">Update Bu Product Category</button>
-					<input type="reset" class="btn btn-default" value="reset" readonly>
+					<button type="submit" class="btn btn-primary">Save</button>
                 <form>
             </div>
         </div>

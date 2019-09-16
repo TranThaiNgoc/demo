@@ -1,5 +1,6 @@
 @extends('admin.layout.index')
 @section('title','Detail Bu')
+@section('name', $bu->name)
 @section('content')
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#info">Info</a></li>
@@ -29,7 +30,7 @@
         <div class="col-sm-9">
             <div class="white-box">
                 <div class="form-horizontal">
-                    <form action="{{ url('admin/bu/edit', ['id' => $bu->id]) }}" method="post">
+                    <form action="{{ url('bu/edit', ['id' => $bu->id]) }}" method="post">
                         @csrf
                         <div class="form-group">
                             <label class="col-sm-1 control-label">Name</label>
@@ -116,7 +117,7 @@
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/bu/add-produce', ['id' => $bu->id]) }}" method="POST">
+                                    action="{{ url('bu/add-produce', ['id' => $bu->id]) }}" method="POST">
                                     @csrf
 
                                     <div class="form-group">
@@ -201,7 +202,7 @@
                             <div class="col-md-2">
                                 <a href="{{ route('admin.bu.pdf.produce', ['id'=>$bu->id]) }}" class="btn btn-default btn-block">PDF</a>
                             </div>
-                            <form action="{{ url('admin/bu/import') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('bu/import') }}" method="post" enctype="multipart/form-data">
                             @csrf
                                 <div class="col-md-2">
                                     <input type="file" name="select_file" class="form-control">
@@ -272,7 +273,7 @@
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/bu/add-variable', ['id' => $bu->id]) }}" method="post">
+                                    action="{{ url('bu/add-variable', ['id' => $bu->id]) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>
@@ -502,7 +503,7 @@
                     <div class="col-sm-9">
                         <div class="white-box">
                             <div>
-                                <form class="form-horizontal" action="{{ url('admin/bu/add-fixed',['id' => $bu->id]) }}"
+                                <form class="form-horizontal" action="{{ url('bu/add-fixed',['id' => $bu->id]) }}"
                                     method="post">
                                     @csrf
                                     <div class="form-group">
@@ -732,7 +733,7 @@
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/bu/add-revenue', ['id'=> $bu->id]) }}" method="post">
+                                    action="{{ url('bu/add-revenue', ['id'=> $bu->id]) }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>
@@ -915,7 +916,7 @@
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/bu/add-profit',['id' => $bu->id]) }}" method="POST">
+                                    action="{{ url('bu/add-profit',['id' => $bu->id]) }}" method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>

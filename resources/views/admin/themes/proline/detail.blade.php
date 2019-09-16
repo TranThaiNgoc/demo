@@ -1,6 +1,6 @@
 @extends('admin.layout.index')
 @section('title')
-Produce line:
+@section('name', $proline->name)
 @endsection
 @section('content')
 
@@ -35,7 +35,7 @@ Produce line:
             <div class="white-box">
                 <div>
                     <form class="form-horizontal"
-                        action="{{ url('admin/proline/edit-proline',['bu'=>$bu->id,'pro'=>$pro->id,'id'=>$proline->id]) }}"
+                        action="{{ url('proline/edit-proline',['bu'=>$bu->id,'pro'=>$pro->id,'id'=>$proline->id]) }}"
                         method="POST">
                         @csrf
                         <div class="form-group">
@@ -127,7 +127,7 @@ Produce line:
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/proline/add-variable',['bu' => $bu->id, 'pro' => $pro->id, 'id'=>$proline->id]) }}"
+                                    action="{{ url('proline/add-variable',['bu' => $bu->id, 'pro' => $pro->id, 'id'=>$proline->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">
@@ -304,7 +304,7 @@ Produce line:
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/proline/add-fixed', ['bu' => $bu->id, 'pro' => $pro->id, 'id'=> $proline->id]) }}"
+                                    action="{{ url('proline/add-fixed', ['bu' => $bu->id, 'pro' => $pro->id, 'id'=> $proline->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">
@@ -480,7 +480,7 @@ Produce line:
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/proline/add-revenue', ['bu' => $bu->id, 'pro'=> $pro->id,'id'=>$proline->id]) }}"
+                                    action="{{ url('proline/add-revenue', ['bu' => $bu->id, 'pro'=> $pro->id,'id'=>$proline->id]) }}"
                                     method="post">
                                     @csrf
                                     <div class="form-group">
@@ -610,7 +610,7 @@ Produce line:
                         <div class="white-box">
                             <div>
                                 <form class="form-horizontal"
-                                    action="{{ url('admin/proline/add-profix', ['bu'=>$bu->id,'pro'=>$pro->id, 'id'=>$proline->id]) }}"
+                                    action="{{ url('proline/add-profix', ['bu'=>$bu->id,'pro'=>$pro->id, 'id'=>$proline->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="form-group">

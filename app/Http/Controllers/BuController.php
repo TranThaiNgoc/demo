@@ -17,6 +17,7 @@ use App\provarcost;
 use App\profixcost;
 use App\prorevenue;
 use App\proprofitshare;
+use App\proline;
 use App\User;
 use Session;
 use DB;
@@ -30,6 +31,8 @@ class BuController extends Controller
     public function getList() {
         $data = [
             'bu' => bu::all(),
+            'procategory' => procategory::where('is_deleted', 0)->get(),
+            'proline' => proline::where('is_deleted', 0)->get(),
             'bucategory' => bucategory::where('is_deleted', 0)->get(),
         ];
         return view('admin.themes.bu.list', $data);
@@ -47,7 +50,7 @@ class BuController extends Controller
             'code' => 'required|min:8|max:10',
             'address' => 'required',
             'tax' => 'required|min:8|max:10',
-            'follow' => 'required|integer',
+            'follow' => 'required',
             'mail' => 'required|email|unique:bu,mail',
             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'remark' => 'required'
@@ -64,7 +67,6 @@ class BuController extends Controller
             'tax.min' => 'Tax has an invalid length.',
             'tax.max' => 'Tax has an invalid length.',
             'follow.required' => 'Follow may not be blank.',
-            'follow.integer' => 'Follow has an invalid length.',
             'mail.requird' => 'Email may not be blank.',
             'mail.email' => 'Invalid email.',
             'mail.unique' => 'Email is already in use',
@@ -108,7 +110,7 @@ class BuController extends Controller
             'code' => 'required|min:8|max:10',
             'address' => 'required',
             'tax' => 'required|min:8|max:10',
-            'follow' => 'required|integer',
+            'follow' => 'required',
             'mail' => 'required|email',
             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'remark' => 'required'
@@ -125,7 +127,6 @@ class BuController extends Controller
             'tax.min' => 'Tax has an invalid length.',
             'tax.max' => 'Tax has an invalid length.',
             'follow.required' => 'Follow may not be blank.',
-            'follow.integer' => 'Follow has an invalid length.',
             'mail.requird' => 'Email may not be blank.',
             'mail.email' => 'Invalid email.',
             'phone.required' => 'Phone may not be blank.',
@@ -255,7 +256,7 @@ class BuController extends Controller
             'name' => 'required|min:2|max:255',
             'code' => 'required|min:8|max:10',
             'address' => 'required',
-            'follow' => 'required|integer',
+            'follow' => 'required',
             'mail' => 'required|email',
             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
             'remark' => 'required'
@@ -269,7 +270,6 @@ class BuController extends Controller
             'code.max' => 'Code has an invalid length.',
             'address.required' => 'Address may not be blank.',
             'follow.required' => 'Follow may not be blank.',
-            'follow.integer' => 'Follow has an invalid length.',
             'mail.requird' => 'Email may not be blank.',
             'mail.email' => 'Invalid email.',
             'phone.required' => 'Phone may not be blank.',
@@ -565,20 +565,18 @@ class BuController extends Controller
         ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
         ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
         ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
-        ->where('bufixcost.created_at', '>=', $one_week)->where('bufixcost.created_at', '<=', $two_week)
-        ->where('buvarcost.created_at', '>=', $one_week)->where('buvarcost.created_at', '<=', $two_week)
-        ->where('buprofitshare.created_at', '>=', $one_week)->where('buprofitshare.created_at', '<=', $two_week)
-        ->where('burevenue.created_at', '>=', $one_week)->where('burevenue.created_at', '<=', $two_week)
-        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'buprofitshare.amount as buprofitshare', 'burevenue.amount as burevenue_total')->get();
         $one_week_variable = 0;
         $one_week_fixed = 0;
         $one_week_revenue = 0;
+        $one_week_profixshare_total = 0;
         $one_week_profixshare = 0;
         foreach($one_week_bu as $key => $value) {
             $one_week_variable += ($value->buvarcost_total);
             $one_week_fixed += ($value->bufixcost_total);
             $one_week_revenue += ($value->burevenue_total);
-            $one_week_profixshare += ($value->buprofitshare_total);
+            $one_week_profixshare_total += ($value->buprofitshare_total);
+            $one_week_profixshare += ($value->buprofitshare);
         }
         $two_week_bu = DB::table('bufixcost')
         ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
@@ -622,14 +620,15 @@ class BuController extends Controller
         }
         $total = $bu_variable + $bu_fixed + $bu_burevenue + $bu_buprofitshare;
         $cost = $bu_variable + $bu_fixed;
-        $total_one_week = $one_week_variable + $one_week_fixed + $one_week_revenue + $one_week_profixshare;
+        // $total_one_week = $one_week_variable + $one_week_fixed + $one_week_revenue + $one_week_profixshare + $one_week_profixshare_total;
         $total_two_week = $two_week_variable + $two_week_fixed + $two_week_revenue + $two_week_profixshare;
         $one_week_cost = $one_week_variable + $one_week_fixed;
         $two_week_cost = $two_week_variable + $two_week_fixed;
         $data = [
-            'one_week_cost' => ($one_week_cost) ? round($one_week_cost/($total_one_week)*100) : 0,
-            'one_week_revenue' => ($one_week_revenue) ? round($one_week_revenue/($total_one_week)*100) : 0,
-            'one_week_profixshare' => ($one_week_profixshare) ? round($one_week_profixshare/($total_one_week)*100) : 0,
+            'one_week_cost' => ($one_week_cost) ? $one_week_cost : 0,
+            'one_week_revenue' => ($one_week_revenue) ? $one_week_revenue : 0,
+            'one_week_profixshare_total' => ($one_week_profixshare_total) ? $one_week_profixshare_total : 0,
+            'one_week_profixshare' => ($one_week_profixshare) ? $one_week_profixshare : 0,
             'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
             'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
             'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
@@ -669,20 +668,18 @@ class BuController extends Controller
         ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
         ->join('burevenue', 'bufixcost.bu_id', '=', 'burevenue.bu_id')
         ->where('bufixcost.bu_id', $id)->where('buvarcost.bu_id', $id)->where('buprofitshare.bu_id', $id)->where('burevenue.bu_id', $id)
-        ->where('bufixcost.created_at', '>=', $one_week)->where('bufixcost.created_at', '<=', $two_week)
-        ->where('buvarcost.created_at', '>=', $one_week)->where('buvarcost.created_at', '<=', $two_week)
-        ->where('buprofitshare.created_at', '>=', $one_week)->where('buprofitshare.created_at', '<=', $two_week)
-        ->where('burevenue.created_at', '>=', $one_week)->where('burevenue.created_at', '<=', $two_week)
-        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'burevenue.amount as burevenue_total')->get();
+        ->select('bufixcost.total as bufixcost_total', 'buvarcost.total as buvarcost_total', 'buprofitshare.total as buprofitshare_total', 'buprofitshare.amount as buprofitshare', 'burevenue.amount as burevenue_total')->get();
         $one_week_variable = 0;
         $one_week_fixed = 0;
         $one_week_revenue = 0;
+        $one_week_profixshare_total = 0;
         $one_week_profixshare = 0;
         foreach($one_week_bu as $key => $value) {
             $one_week_variable += ($value->buvarcost_total);
             $one_week_fixed += ($value->bufixcost_total);
             $one_week_revenue += ($value->burevenue_total);
-            $one_week_profixshare += ($value->buprofitshare_total);
+            $one_week_profixshare_total += ($value->buprofitshare_total);
+            $one_week_profixshare += ($value->buprofitshare);
         }
         $two_week_bu = DB::table('bufixcost')
         ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
@@ -733,9 +730,10 @@ class BuController extends Controller
         $one_week_cost = $one_week_variable + $one_week_fixed;
         $two_week_cost = $two_week_variable + $two_week_fixed;
         $data = [
-            'one_week_cost' => ($one_week_cost) ? round($one_week_cost/($total_one_week)*100) : 0,
-            'one_week_revenue' => ($one_week_revenue) ? round($one_week_revenue/($total_one_week)*100) : 0,
-            'one_week_profixshare' => ($one_week_profixshare) ? round($one_week_profixshare/($total_one_week)*100) : 0,
+            'one_week_cost' => ($one_week_cost) ? $one_week_cost : 0,
+            'one_week_revenue' => ($one_week_revenue) ? $one_week_revenue : 0,
+            'one_week_profixshare_total' => ($one_week_profixshare_total) ? $one_week_profixshare_total : 0,
+            'one_week_profixshare' => ($one_week_profixshare) ? $one_week_profixshare : 0,
             'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
             'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
             'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
