@@ -231,7 +231,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinevarcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinevarcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -271,7 +271,7 @@
                                                     {{($cost->id == $value->costcategory_id) ? $cost->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('delete.variable',['bu'=>$bu->id,'pro'=>$pro->id,'id'=>$value->id]) }}"
@@ -408,7 +408,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinefixcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinefixcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -448,7 +448,7 @@
                                                     {{($cost->id == $value->costcategory_id) ? $cost->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('delete.fixed', ['bu'=>$bu->id,'pro'=>$pro->id,'id'=>$value->id]) }}" class="btn btn-danger"
@@ -546,7 +546,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinerevenue,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinerevenue,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -580,7 +580,7 @@
                                                 {{ ($item->id==$value->cart_item) ? $item->name : '' }}
                                                 @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="" class="btn btn-danger">Delete</a>
@@ -688,8 +688,8 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Profit: <code>{{ number_format(Session('total_amount'),0,',','.') }} đ</code></h2>
-                                <h2> Profit Share: <code>{{ number_format($total_prolinefitshare,0,',','.') }} đ</code></h2>
+                                <h2> Profit: <code>{{ number_format(Session('total_amount'),0,',','.') }} đồng</code></h2>
+                                <h2> Profit Share: <code>{{ number_format($total_prolinefitshare,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -723,7 +723,7 @@
                                                 {{ ($value->cart_item==$item->id) ? $item->name : '' }}
                                                 @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('delete.profix',['bu'=>$bu->id,'pro'=>$pro->id,'id'=>$value->id]) }}" class="btn btn-danger">Delete</a>

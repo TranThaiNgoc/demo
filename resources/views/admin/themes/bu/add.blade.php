@@ -84,7 +84,7 @@
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">Remark</label>
                                 <div class="col-sm-11">
-                                    <textarea class="form-control" type="text" name="remark"></textarea>
+                                    <textarea class="form-control ckeditor" type="text" name="remark"></textarea>
                                     <span class="text-danger">{{ $errors->first('remark') }}</span>
                                 </div>
                             </div>

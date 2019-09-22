@@ -383,7 +383,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinevarcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinevarcost,0,',','.') }} đồng</code></h2>
                                 
                             </div>
                         </div>
@@ -427,7 +427,7 @@
                                                     @endforeach
                                                 </td>
                                                 <td>{{ $value->qty }}</td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -446,7 +446,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_provarcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_provarcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -486,7 +486,7 @@
                                                     {{ ($value->costcategory_id == $cost->id) ? $cost->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('produce.delete.variable',['bu' => $bu->id,'id'=> $value->id]) }}"
@@ -624,7 +624,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinefixcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinefixcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -664,7 +664,7 @@
                                                     {{ ($value->costcategory_id == $cost->id) ? $cost->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('produce.delete.variable',['bu' => $bu->id,'id'=> $value->id]) }}"
@@ -686,7 +686,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_profixcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_profixcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -726,7 +726,7 @@
                                                     {{ ($value->costcategory_id==$cost->id) ? $cost->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('produce.delete.fixed',['bu' => $bu->id, 'id' => $value->id]) }}"
@@ -826,7 +826,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prolinerevenue,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prolinerevenue,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -860,7 +860,7 @@
                                                     {{($item->id==$value->cart_item) ? $item->name : ''}}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="" class="btn btn-danger">Delete</a>
@@ -879,7 +879,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prorevenue,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prorevenue,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -913,7 +913,7 @@
                                                     {{ ($item->id == $value->cart_item) ? $item->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('produce.delete.revenue',['bu' => $bu->id,'id'=> $value->id]) }}"
@@ -1024,12 +1024,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 @foreach(@$prolinefitshare as $value)
-                                <h2> Profit: <code>{{ number_format($value->total,0,',','.') }} đ</code></h2>
+                                <h2> Profit: <code>{{ number_format($value->total,0,',','.') }} đồng</code></h2>
                                 @php
                                 break;
                                 @endphp
                                 @endforeach
-                                <h2> Profit Share: <code>{{ number_format($total_prolinefitshare,0,',','.') }} đ</code>
+                                <h2> Profit Share: <code>{{ number_format($total_prolinefitshare,0,',','.') }} đồng</code>
                                 </h2>
                             </div>
                         </div>
@@ -1066,7 +1066,7 @@
                                                     {{($item->id==$value->cart_item) ? $item->name : ''}}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -1084,8 +1084,8 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Profit: <code>{{ number_format(Session('total_amount'),0,',','.') }} đ</code></h2>
-                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đ</code></h2>
+                                <h2> Profit: <code>{{ number_format(Session('total_amount'),0,',','.') }} đồng</code></h2>
+                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -1119,7 +1119,7 @@
                                                     {{ ($item->id == $value->cart_item) ? $item->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('produce.delete.profix',['bu'=>$bu->id, 'id'=>$value->id]) }}"

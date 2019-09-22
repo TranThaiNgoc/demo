@@ -87,7 +87,7 @@
                         <div class="form-group">
                             <label class="col-sm-1 control-label">Remark</label>
                             <div class="col-sm-11">
-                                <textarea class="form-control" type="text" name="remark">{{ $bu->remark }}</textarea>
+                                <textarea class="form-control ckeditor" type="text" name="remark">{{ $bu->remark }}</textarea>
                             </div>
                         </div>
 
@@ -175,7 +175,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Remark</label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control" type="text"
+                                            <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
                                         </div>
                                     </div>
@@ -348,7 +348,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Remark</label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control" type="text"
+                                            <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
                                         </div>
                                     </div>
@@ -367,7 +367,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_provarcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_provarcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -412,7 +412,7 @@
                                                     @endforeach
                                                 </td>
                                                 <td>{{ date('Y-m-d',strtotime($value->created_at)) }}</td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -430,7 +430,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_buvarcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_buvarcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -470,7 +470,7 @@
                                                     {{ ($cart->id==$value->costcategory_id) ? $cart->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('bu.delete.variable',['id'=>$value->id]) }}"
@@ -579,7 +579,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Remark</label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control" type="text"
+                                            <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
                                         </div>
                                     </div>
@@ -598,7 +598,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_profixcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_profixcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -641,7 +641,7 @@
                                                     @endforeach
                                                 </td>
                                                 <td>{{ date('Y-m-d',strtotime($value->created_at)) }}</td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -659,7 +659,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_bufixcost,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_bufixcost,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -699,7 +699,7 @@
                                                     {{ ($cart->id==$value->costcategory_id) ? $cart->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->total,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->total,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('bu.delete.fixed',['id'=>$value->id]) }}"
@@ -779,7 +779,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Remark</label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control" type="text"
+                                            <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
                                         </div>
                                     </div>
@@ -798,7 +798,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_prorevenue,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_prorevenue,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -832,7 +832,7 @@
                                                     {{($item->id==$value->cart_item) ? $item->name : ''}}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -850,7 +850,7 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Total: <code>{{ number_format($total_burevenue,0,',','.') }} đ</code></h2>
+                                <h2> Total: <code>{{ number_format($total_burevenue,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -884,7 +884,7 @@
                                                     {{ ($item->id==$value->cart_item) ? $item->name : '' }}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('bu.delete.revenue', ['id' => $value->id]) }}"
@@ -973,7 +973,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">Remark</label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control" type="text"
+                                            <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
                                             <span class="text-danger">{{ $errors->first('amount') }}</span>
                                         </div>
@@ -994,12 +994,12 @@
                         <div class="row">
                             <div class="col-md-4">
                                 @foreach(@$proprofitshare as $value)
-                                <h2> Profit: <code></code>{{ number_format($value->total,0,',','.') }} đ</h2>
+                                <h2> Profit: <code></code>{{ number_format($value->total,0,',','.') }} đồng</h2>
                                 @php
                                 break;
                                 @endphp
                                 @endforeach
-                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đ</code></h2>
+                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đồng</code></h2>
                             </div>
                         </div>
 
@@ -1033,7 +1033,7 @@
                                                     {{($item->id==$value->cart_item)?$item->name:''}}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                 </td>
@@ -1051,8 +1051,8 @@
                     <div class="white-box">
                         <div class="row">
                             <div class="col-md-4">
-                                <h2> Profit: <code>{{ number_format($total_amount,0,',','.') }} đ</code></h2>
-                                <h2> Profit Share: <code>{{ number_format($total_buprofitshare,0,',','.') }} đ</code>
+                                <h2> Profit: <code>{{ number_format($total_amount,0,',','.') }} đồng</code></h2>
+                                <h2> Profit Share: <code>{{ number_format($total_buprofitshare,0,',','.') }} đồng</code>
                                 </h2>
                             </div>
                         </div>
@@ -1087,7 +1087,7 @@
                                                     {{($item->id == $value->cart_item) ? $item->name : ''}}
                                                     @endforeach
                                                 </td>
-                                                <td>{{ number_format($value->amount,0,',','.') }} đ</td>
+                                                <td>{{ number_format($value->amount,0,',','.') }} đồng</td>
                                                 <td>
                                                     <a href="" class="btn btn-warning">Detail</a>
                                                     <a href="{{ route('bu.delete.profix',['id' => $value->id]) }}"
