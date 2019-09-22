@@ -33,6 +33,8 @@
     </form>
 </div>
     <div id="container" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
+    <div id="produce" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
+    <div id="proline" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
     <div id="piechart" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>    
 @endsection
 @push('js')
@@ -47,7 +49,7 @@ Highcharts.chart('container', {
         type: 'column'
     },
     title: {
-        text: 'The chart of all company money, 2019'
+        text: 'The chart of all Bu money, 2019'
     },
     xAxis: {
         type: 'category'
@@ -98,6 +100,278 @@ Highcharts.chart('container', {
                 {
                     name: "Profit",
                     y: {{ $one_week_profixshare_total }},
+                    drilldown: "Profit"
+                }
+            ]
+        }
+    ],
+    drilldown: {
+        series: [
+            {
+                name: "Revenue",
+                id: "Revenue",
+                data: [
+                    [
+                        "v11.0",
+                        3.39
+                    ],
+                    [
+                        "v10.1",
+                        0.96
+                    ],
+                    [
+                        "v10.0",
+                        0.36
+                    ],
+                    [
+                        "v9.1",
+                        0.54
+                    ],
+                    [
+                        "v9.0",
+                        0.13
+                    ],
+                    [
+                        "v5.1",
+                        0.2
+                    ]
+                ]
+            },
+            {
+                name: "Cost",
+                id: "Cost",
+                data: [
+                    [
+                        "v16",
+                        2.6
+                    ],
+                    [
+                        "v15",
+                        0.92
+                    ],
+                    [
+                        "v14",
+                        0.4
+                    ],
+                    [
+                        "v13",
+                        0.1
+                    ]
+                ]
+            },
+            {
+                name: "Opera",
+                id: "Opera",
+                data: [
+                    [
+                        "v50.0",
+                        0.96
+                    ],
+                    [
+                        "v49.0",
+                        0.82
+                    ],
+                    [
+                        "v12.1",
+                        0.14
+                    ]
+                ]
+            }
+        ]
+    }
+});
+Highcharts.chart('produce', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'The chart of all Produce money, 2019'
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Total money market share'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y} Đồng</b> of total<br/>'
+    },
+
+    series: [
+        {
+            name: "Total",
+            colorByPoint: true,
+            data: [
+                {
+                    name: "Revenue",
+                    y: {{ $one_week_pro_revenue }},
+                    drilldown: "Revenue"
+                },
+                {
+                    name: "Cost",
+                    y: {{ $one_week_produce_cost }},
+                    drilldown: "cost"
+                },
+                {
+                    name: "Profit share",
+                    y: {{ $one_week_pro_profixshare }},
+                    drilldown: "Profit share"
+                },
+                {
+                    name: "Profit",
+                    y: {{ $one_week_pro_profixshare_total }},
+                    drilldown: "Profit"
+                }
+            ]
+        }
+    ],
+    drilldown: {
+        series: [
+            {
+                name: "Revenue",
+                id: "Revenue",
+                data: [
+                    [
+                        "v11.0",
+                        3.39
+                    ],
+                    [
+                        "v10.1",
+                        0.96
+                    ],
+                    [
+                        "v10.0",
+                        0.36
+                    ],
+                    [
+                        "v9.1",
+                        0.54
+                    ],
+                    [
+                        "v9.0",
+                        0.13
+                    ],
+                    [
+                        "v5.1",
+                        0.2
+                    ]
+                ]
+            },
+            {
+                name: "Cost",
+                id: "Cost",
+                data: [
+                    [
+                        "v16",
+                        2.6
+                    ],
+                    [
+                        "v15",
+                        0.92
+                    ],
+                    [
+                        "v14",
+                        0.4
+                    ],
+                    [
+                        "v13",
+                        0.1
+                    ]
+                ]
+            },
+            {
+                name: "Opera",
+                id: "Opera",
+                data: [
+                    [
+                        "v50.0",
+                        0.96
+                    ],
+                    [
+                        "v49.0",
+                        0.82
+                    ],
+                    [
+                        "v12.1",
+                        0.14
+                    ]
+                ]
+            }
+        ]
+    }
+});
+Highcharts.chart('proline', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'The chart of all Proline money, 2019'
+    },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Total money market share'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y} Đồng</b> of total<br/>'
+    },
+
+    series: [
+        {
+            name: "Total",
+            colorByPoint: true,
+            data: [
+                {
+                    name: "Revenue",
+                    y: {{ $one_week_proline_revenue }},
+                    drilldown: "Revenue"
+                },
+                {
+                    name: "Cost",
+                    y: {{ $one_week_proline_cost }},
+                    drilldown: "cost"
+                },
+                {
+                    name: "Profit share",
+                    y: {{ $one_week_proline_profixshare }},
+                    drilldown: "Profit share"
+                },
+                {
+                    name: "Profit",
+                    y: {{ $one_week_proline_profixshare_total }},
                     drilldown: "Profit"
                 }
             ]

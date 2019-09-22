@@ -578,6 +578,54 @@ class BuController extends Controller
             $one_week_profixshare_total += ($value->buprofitshare_total);
             $one_week_profixshare += ($value->buprofitshare);
         }
+        $produces = DB::table('produce')->where('bu_id', $id)->where('is_deleted', 0)->get();
+        foreach($produces as $key => $value) {
+            $produce[] = $value->id;
+        }
+        $one_week_produce = DB::table('profixcost')->whereIn('profixcost.pro_id', $produce)
+        ->join('provarcost', 'profixcost.pro_id', '=', 'provarcost.pro_id')
+        ->join('prorevenue', 'profixcost.pro_id', '=', 'prorevenue.pro_id')
+        ->join('proprofitshare', 'profixcost.pro_id', '=', 'proprofitshare.pro_id')
+        ->whereIn('provarcost.pro_id', $produce)
+        ->whereIn('prorevenue.pro_id', $produce)
+        ->whereIn('proprofitshare.pro_id', $produce)
+        ->select('profixcost.total as profixcost_total', 'provarcost.total as provarcost_total', 'prorevenue.amount as prorevenue_amount', 'proprofitshare.amount as proprofitshare_amount', 'proprofitshare.total as proprofitshare_total')->get();
+        $one_week_pro_variable = 0;
+        $one_week_pro_fixed = 0;
+        $one_week_pro_revenue = 0;
+        $one_week_pro_profixshare_total = 0;
+        $one_week_pro_profixshare = 0;
+        foreach($one_week_produce as $key => $value) {
+            $one_week_pro_variable += ($value->provarcost_total);
+            $one_week_pro_fixed += ($value->profixcost_total);
+            $one_week_pro_revenue += ($value->prorevenue_amount);
+            $one_week_pro_profixshare_total += ($value->proprofitshare_total);
+            $one_week_pro_profixshare += ($value->proprofitshare_amount);
+        }
+        $prolines = DB::table('proline')->where('is_deleted', 0)->whereIn('pro_id',$produce)->get();
+        foreach($prolines as $key => $value) {
+            $proline[] = $value->id;
+        }
+        $one_week_proline = DB::table('prolinefixcost')->whereIn('prolinefixcost.proline_id', $proline)
+        ->join('prolineprofitshare', 'prolinefixcost.proline_id', '=', 'prolineprofitshare.proline_id')
+        ->join('prolinerevenue', 'prolinefixcost.proline_id', '=', 'prolinerevenue.proline_id')
+        ->join('prolinevarcost', 'prolinefixcost.proline_id', '=', 'prolinevarcost.proline_id')
+        ->whereIn('prolineprofitshare.proline_id', $proline)
+        ->whereIn('prolinerevenue.proline_id', $proline)
+        ->whereIn('prolinevarcost.proline_id', $proline)
+        ->select('prolinefixcost.total as prolinefixcost_total', 'prolineprofitshare.amount as prolineprofitshare_amount', 'prolineprofitshare.total as prolineprofitshare_total', 'prolinerevenue.amount as prolinerevenue_amount', 'prolinevarcost.total as prolinevarcost_total')->get();
+        $one_week_proline_variable = 0;
+        $one_week_proline_fixed = 0;
+        $one_week_proline_revenue = 0;
+        $one_week_proline_profixshare_total = 0;
+        $one_week_proline_profixshare = 0;
+        foreach($one_week_proline as $key => $value) {
+            $one_week_proline_variable += ($value->prolinevarcost_total);
+            $one_week_proline_fixed += ($value->prolinefixcost_total);
+            $one_week_proline_revenue += ($value->prolinerevenue_amount);
+            $one_week_proline_profixshare += ($value->prolineprofitshare_amount);
+            $one_week_proline_profixshare_total += ($value->prolineprofitshare_total);
+        }
         $two_week_bu = DB::table('bufixcost')
         ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
         ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
@@ -623,12 +671,22 @@ class BuController extends Controller
         // $total_one_week = $one_week_variable + $one_week_fixed + $one_week_revenue + $one_week_profixshare + $one_week_profixshare_total;
         $total_two_week = $two_week_variable + $two_week_fixed + $two_week_revenue + $two_week_profixshare;
         $one_week_cost = $one_week_variable + $one_week_fixed;
+        $one_week_produce_cost = $one_week_pro_variable + $one_week_pro_fixed;
+        $one_week_proline_cost = $one_week_proline_fixed + $one_week_proline_variable;
         $two_week_cost = $two_week_variable + $two_week_fixed;
         $data = [
             'one_week_cost' => ($one_week_cost) ? $one_week_cost : 0,
             'one_week_revenue' => ($one_week_revenue) ? $one_week_revenue : 0,
             'one_week_profixshare_total' => ($one_week_profixshare_total) ? $one_week_profixshare_total : 0,
             'one_week_profixshare' => ($one_week_profixshare) ? $one_week_profixshare : 0,
+            'one_week_produce_cost' => ($one_week_produce_cost) ? $one_week_produce_cost : 0,
+            'one_week_pro_revenue' => ($one_week_pro_revenue) ? $one_week_pro_revenue : 0,
+            'one_week_pro_profixshare_total' => ($one_week_pro_profixshare_total) ? $one_week_pro_profixshare_total : 0,
+            'one_week_pro_profixshare' => ($one_week_pro_profixshare) ? $one_week_pro_profixshare : 0,
+            'one_week_proline_cost' => ($one_week_proline_cost) ? $one_week_proline_cost : 0,
+            'one_week_proline_revenue' => ($one_week_proline_revenue) ? $one_week_proline_revenue : 0,
+            'one_week_proline_profixshare' => ($one_week_proline_profixshare) ? $one_week_proline_profixshare : 0,
+            'one_week_proline_profixshare_total' => ($one_week_proline_profixshare_total) ? $one_week_proline_profixshare_total : 0,
             'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
             'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
             'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
@@ -681,6 +739,54 @@ class BuController extends Controller
             $one_week_profixshare_total += ($value->buprofitshare_total);
             $one_week_profixshare += ($value->buprofitshare);
         }
+        $produces = DB::table('produce')->where('bu_id', $id)->where('is_deleted', 0)->get();
+        foreach($produces as $key => $value) {
+            $produce[] = $value->id;
+        }
+        $one_week_produce = DB::table('profixcost')->whereIn('profixcost.pro_id', $produce)
+        ->join('provarcost', 'profixcost.pro_id', '=', 'provarcost.pro_id')
+        ->join('prorevenue', 'profixcost.pro_id', '=', 'prorevenue.pro_id')
+        ->join('proprofitshare', 'profixcost.pro_id', '=', 'proprofitshare.pro_id')
+        ->whereIn('provarcost.pro_id', $produce)
+        ->whereIn('prorevenue.pro_id', $produce)
+        ->whereIn('proprofitshare.pro_id', $produce)
+        ->select('profixcost.total as profixcost_total', 'provarcost.total as provarcost_total', 'prorevenue.amount as prorevenue_amount', 'proprofitshare.amount as proprofitshare_amount', 'proprofitshare.total as proprofitshare_total')->get();
+        $one_week_pro_variable = 0;
+        $one_week_pro_fixed = 0;
+        $one_week_pro_revenue = 0;
+        $one_week_pro_profixshare_total = 0;
+        $one_week_pro_profixshare = 0;
+        foreach($one_week_produce as $key => $value) {
+            $one_week_pro_variable += ($value->provarcost_total);
+            $one_week_pro_fixed += ($value->profixcost_total);
+            $one_week_pro_revenue += ($value->prorevenue_amount);
+            $one_week_pro_profixshare_total += ($value->proprofitshare_total);
+            $one_week_pro_profixshare += ($value->proprofitshare_amount);
+        }
+        $prolines = DB::table('proline')->where('is_deleted', 0)->whereIn('pro_id',$produce)->get();
+        foreach($prolines as $key => $value) {
+            $proline[] = $value->id;
+        }
+        $one_week_proline = DB::table('prolinefixcost')->whereIn('prolinefixcost.proline_id', $proline)
+        ->join('prolineprofitshare', 'prolinefixcost.proline_id', '=', 'prolineprofitshare.proline_id')
+        ->join('prolinerevenue', 'prolinefixcost.proline_id', '=', 'prolinerevenue.proline_id')
+        ->join('prolinevarcost', 'prolinefixcost.proline_id', '=', 'prolinevarcost.proline_id')
+        ->whereIn('prolineprofitshare.proline_id', $proline)
+        ->whereIn('prolinerevenue.proline_id', $proline)
+        ->whereIn('prolinevarcost.proline_id', $proline)
+        ->select('prolinefixcost.total as prolinefixcost_total', 'prolineprofitshare.amount as prolineprofitshare_amount', 'prolineprofitshare.total as prolineprofitshare_total', 'prolinerevenue.amount as prolinerevenue_amount', 'prolinevarcost.total as prolinevarcost_total')->get();
+        $one_week_proline_variable = 0;
+        $one_week_proline_fixed = 0;
+        $one_week_proline_revenue = 0;
+        $one_week_proline_profixshare_total = 0;
+        $one_week_proline_profixshare = 0;
+        foreach($one_week_proline as $key => $value) {
+            $one_week_proline_variable += ($value->prolinevarcost_total);
+            $one_week_proline_fixed += ($value->prolinefixcost_total);
+            $one_week_proline_revenue += ($value->prolinerevenue_amount);
+            $one_week_proline_profixshare += ($value->prolineprofitshare_amount);
+            $one_week_proline_profixshare_total += ($value->prolineprofitshare_total);
+        }
         $two_week_bu = DB::table('bufixcost')
         ->join('buvarcost', 'bufixcost.bu_id', '=', 'buvarcost.bu_id')
         ->join('buprofitshare', 'bufixcost.bu_id', '=', 'buprofitshare.bu_id')
@@ -729,11 +835,21 @@ class BuController extends Controller
         $total_two_week = $two_week_variable + $two_week_fixed + $two_week_revenue + $two_week_profixshare;
         $one_week_cost = $one_week_variable + $one_week_fixed;
         $two_week_cost = $two_week_variable + $two_week_fixed;
+        $one_week_produce_cost = $one_week_pro_variable + $one_week_pro_fixed;
+        $one_week_proline_cost = $one_week_proline_fixed + $one_week_proline_variable;
         $data = [
             'one_week_cost' => ($one_week_cost) ? $one_week_cost : 0,
             'one_week_revenue' => ($one_week_revenue) ? $one_week_revenue : 0,
             'one_week_profixshare_total' => ($one_week_profixshare_total) ? $one_week_profixshare_total : 0,
             'one_week_profixshare' => ($one_week_profixshare) ? $one_week_profixshare : 0,
+            'one_week_produce_cost' => ($one_week_produce_cost) ? $one_week_produce_cost : 0,
+            'one_week_pro_revenue' => ($one_week_pro_revenue) ? $one_week_pro_revenue : 0,
+            'one_week_pro_profixshare_total' => ($one_week_pro_profixshare_total) ? $one_week_pro_profixshare_total : 0,
+            'one_week_pro_profixshare' => ($one_week_pro_profixshare) ? $one_week_pro_profixshare : 0,
+            'one_week_proline_cost' => ($one_week_proline_cost) ? $one_week_proline_cost : 0,
+            'one_week_proline_revenue' => ($one_week_proline_revenue) ? $one_week_proline_revenue : 0,
+            'one_week_proline_profixshare' => ($one_week_proline_profixshare) ? $one_week_proline_profixshare : 0,
+            'one_week_proline_profixshare_total' => ($one_week_proline_profixshare_total) ? $one_week_proline_profixshare_total : 0,
             'two_week_cost' => ($two_week_cost) ? round($two_week_cost/($total_two_week)*100) : 0,
             'two_week_revenue' => ($two_week_revenue) ? round($two_week_revenue/($total_two_week)*100) : 0,
             'two_week_profixshare' => ($two_week_profixshare) ? round($two_week_profixshare/($total_two_week)*100) : 0,
@@ -742,8 +858,8 @@ class BuController extends Controller
             'bu_variable' => ($total > 0) ? round($bu_variable/($total)*100) : 0,
             'bu_fixed' => ($total > 0) ? round($bu_fixed/($total)*100) : 0,
             'cost' => ($total > 0) ? round($cost/($total)*100) : 0,
-            'bu_burevenue' => round($bu_burevenue/($total)*100),
-            'bu_buprofitshare' => round($bu_buprofitshare/($total)*100),
+            'bu_burevenue' => ($total > 0) ? round($bu_burevenue/($total)*100) : 0,
+            'bu_buprofitshare' => ($total > 0) ? round($bu_buprofitshare/($total)*100) : 0,
         ];
         return view('admin.themes.bu.chart', $data)->render();
     }
