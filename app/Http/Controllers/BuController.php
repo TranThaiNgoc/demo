@@ -507,7 +507,7 @@ class BuController extends Controller
     public function getPDF($id) {
         $data = [
             'produce' => produce::where('bu_id', $id)->get(),
-            'bu' => bu::where('id', $id)->first(),
+            'bus' => bu::where('id', $id)->first(),
         ];
         $pdf = PDF::loadView('produce', $data);
   

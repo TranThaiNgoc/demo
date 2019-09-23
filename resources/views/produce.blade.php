@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-    .page-break {
-        font-family:Times New Roman;
+    body {
+        font-family: DejaVu Sans;
     }
     </style>
 </head>
 
 <body>
-    <h2>Tất cả xưởng sản xuất theo công ty {{ $bu->name }}</h2>
+    <h2>Tất cả xưởng sản xuất theo công ty {{ $bus->name }}</h2>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -32,7 +32,9 @@
             @foreach(@$produce as $value)
             <tr>
                 <td class="page-break">{{ $value->name }}</td>
-                <td>{{ $bu->{$value->bu_id} }}</td>
+                <td>
+                {{ ($value->bu_id == $bus->id) ? $bus->name : '' }}
+                </td>
                 <td>{{ $value->code }}</td>
                 <td>{{ $value->address }}</td>
                 <td>{{ $value->mail }}</td>

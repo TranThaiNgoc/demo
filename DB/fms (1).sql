@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 11, 2019 lúc 10:17 AM
+-- Thời gian đã tạo: Th9 22, 2019 lúc 05:18 PM
 -- Phiên bản máy phục vụ: 10.1.38-MariaDB
 -- Phiên bản PHP: 7.1.28
 
@@ -49,7 +49,7 @@ CREATE TABLE `bu` (
 --
 
 INSERT INTO `bu` (`id`, `name`, `code`, `address`, `bucategory_id`, `tax`, `follow`, `mail`, `phone`, `remark`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(3, 'Công Ty a', '123456789', 'Bà Rịa - Vũng Tàu', 4, '123456789', '1', 'tranthaingoc0147@gmail.com', '0899784382', 'test', 0, '2019-08-28', '2019-08-29');
+(3, 'Công Ty a', '123456789', 'Bà Rịa - Vũng Tàu', 4, '123456789', 'Trần Thái Ngọc', 'tranthaingoc0147@gmail.com', '0899784382', 'test', 0, '2019-08-28', '2019-09-15');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,8 @@ CREATE TABLE `buprofitshare` (
 --
 
 INSERT INTO `buprofitshare` (`id`, `name`, `cart_item`, `bu_id`, `docnum`, `percent`, `amount`, `total`, `date`, `remark`, `is_deleted`, `created_at`, `updated_at`) VALUES
-(1, 'Lợi nhuận gốc', '2', 3, 'Trần Thái Ngọc', '20', '1400000', '7000000', '2019-09-08', 'Lợi nhuận góc', 0, '2019-09-07 14:08:49', '2019-09-08 14:08:49');
+(1, 'Lợi nhuận gốc', '2', 3, 'Trần Thái Ngọc', '20', '1400000', '7000000', '2019-09-08', 'Lợi nhuận góc', 0, '2019-09-07 14:08:49', '2019-09-08 14:08:49'),
+(3, 'test', '1', 3, '12345678', '10', '700000', '7000000', '2019-09-16', 'test', 0, '2019-09-16 10:55:10', '2019-09-16 10:55:10');
 
 -- --------------------------------------------------------
 
@@ -756,7 +757,7 @@ INSERT INTO `users` (`id`, `name`, `gender`, `address`, `phone`, `password`, `em
 (2, 'cmsmem', 1, NULL, NULL, '$2y$10$VTMW9/BCYpYXX1Rohkv99uI.LKSJo6PQTDtdSbTO7v/P/2KIn6N2O', 'cmsmem@gmail.com', '[]', NULL, 0, 'vn', NULL, 0, NULL, '2018-09-26 03:27:54', '2018-09-26 03:27:54', NULL),
 (3, 'abc', 1, 'akfl', '123465', '$2y$10$.BrSTry9vRJIliLdOjLx2.kZSj288XoA1WM0/sP8uToOdizzAK06G', 'admindemo@gmail.com', '[]', 'abc@gmail,com', 1, 'vn', 'adfs', 0, NULL, '2018-10-05 07:37:44', '2018-10-05 08:27:00', NULL),
 (4, 'Demo', 1, NULL, NULL, '$2y$10$IDrdpZge/uZ2N8CkQ9Fvfer0IW0VwypizNmI5AfM4cScbqC2VGo32', 'demo@gmail.com', '[]', NULL, 0, 'en', NULL, 0, NULL, '2019-07-31 14:16:26', '2019-07-31 14:16:26', NULL),
-(5, 'Trần Thái Ngọc', 1, NULL, NULL, '$2y$10$kI4xldAcXvuTdSj5a3ObDuBSukFDTqGwJ45TL.qKi7XxR2a41tCBW', 'tranthaingoc0147@gmail.com', '[\"users\",\"admin\",\"supperadmin\"]', NULL, 0, 'en', NULL, 0, NULL, '2019-08-24 12:07:43', '2019-08-24 12:07:43', 'hfc4Raj9vRyLWYwGWqmkS8bevnrexZJRyFMDQlB9OPN9dHRBHwMJfMD9qfUe'),
+(5, 'Trần Thái Ngọc', 1, NULL, NULL, '$2y$10$kI4xldAcXvuTdSj5a3ObDuBSukFDTqGwJ45TL.qKi7XxR2a41tCBW', 'tranthaingoc0147@gmail.com', '[\"users\",\"admin\",\"supperadmin\"]', NULL, 0, 'en', NULL, 0, NULL, '2019-08-24 12:07:43', '2019-08-24 12:07:43', 'rY4K9W81jhfXE2WHWvaL6116TKT9i7AWtDtVj7sFOsvLalUgUKZTQebb35xJ'),
 (9, 'user1', NULL, NULL, NULL, '$2y$10$q3Cce1mfuFowpeJw.uc.Kuu.DN5h6L4cHB/uDTxYNm6wRrHq.r8pm', 'user1@gmail.com', '[\"users\",\"admin\",\"supperadmin\"]', NULL, NULL, 'en', NULL, 0, NULL, '2019-09-11 08:09:09', '2019-09-11 08:09:09', 'bDUzlUkbyhaaATCvY4ydaxGBDuCvPhNdMgqCWu3S6h2IGCK4YWA2EVd1SxID');
 
 --
@@ -939,7 +940,7 @@ ALTER TABLE `bufixcost`
 -- AUTO_INCREMENT cho bảng `buprofitshare`
 --
 ALTER TABLE `buprofitshare`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `burevenue`
