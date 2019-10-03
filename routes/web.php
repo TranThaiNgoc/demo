@@ -39,7 +39,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth', 'role:supperadmin,admin'
 		Route::get('excel.produce/{id}', 'export\ExportProController@getExcelProduce')->name('admin.bu.export.produce');
 		Route::get('excel.produce.variable', 'export\ExportBu_Pro_VariableController@getExcel')->name('admin.bu.export.produce.variable');
 		Route::get('pdf/{id}', 'BuController@getPDF')->name('admin.bu.pdf.produce');
-		Route::post('import', 'BuController@postImportProduce');
+		Route::post('import/{id}', 'BuController@postImportProduce');
 	});
 
 	Route::group(['prefix' => 'produce'], function(){

@@ -29,7 +29,7 @@
         <div class="col-sm-9">
             <div class="white-box">
                 <div>
-                    <form class="form-horizontal" action="" method="POST">
+                    <form class="form-horizontal" action="{{ url('bu') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label class="col-sm-1 control-label">Name</label>
@@ -124,7 +124,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Remark</label>
                         <div class="col-sm-10">
-                            {{$b->remark}}
+                            {!!$b->remark!!}
                         </div>
                     </div>
 

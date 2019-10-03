@@ -1,12 +1,12 @@
 @extends('admin.layout.index')
 @section('title','Chart Bu')
 @section('content')
-<div class="tab-content">
-    <form action="" method="post">
+<div class="container">
+    <form action="" method="post" class="text-center">
         @csrf
         <div class="d-flex justify-content-between">
             <div class="row">
-                <div class="col-md-8 offset-md-4 text-center" style="margin-left:267px;">
+                <div class="col-md-8 offset-md-4" style="margin-left:267px;">
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label for="from"><strong>Start day</strong></label>
@@ -31,11 +31,11 @@
             </div>
         </div>
     </form>
-</div>
     <div id="container" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
     <div id="produce" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
     <div id="proline" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
-    <div id="piechart" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>    
+    <div id="piechart" class="text-center" style="max-width:900px ;height: 400px; margin: 0 auto"></div>
+</div>    
 @endsection
 @push('js')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -56,7 +56,7 @@ Highcharts.chart('container', {
     },
     yAxis: {
         title: {
-            text: 'Total money market share'
+            text: ''
         }
 
     },
@@ -192,7 +192,7 @@ Highcharts.chart('produce', {
     },
     yAxis: {
         title: {
-            text: 'Total money market share'
+            text: ''
         }
 
     },
@@ -328,7 +328,7 @@ Highcharts.chart('proline', {
     },
     yAxis: {
         title: {
-            text: 'Total money market share'
+            text: ''
         }
 
     },

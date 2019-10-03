@@ -26,6 +26,12 @@
         {{ session('error') }}
     </div>
     @endif
+    @if(count($errors) > 0)
+    <div class="col-lg-9 alert alert-danger" id="success-danger">
+        <button type="button" class="close" data-dismiss="danger">x</button>
+        The fields must not be blank
+    </div>
+    @endif
 </div>
 
 <div class="tab-content">
@@ -774,6 +780,7 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="docnum"
                                                 value="{{ old('docnum') }}">
+                                                <span class="text-danger">{{ $errors->first('docnum') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Cat.</label>
@@ -783,6 +790,7 @@
                                                 <option value={{ $value->id }}>{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('cart_item') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -790,18 +798,21 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="name"
                                                 value="{{ old('name') }}">
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Amount</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="number" name="amount"
                                                 value="{{ old('amount') }}">
+                                                <span class="text-danger">{{ $errors->first('amount') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Date</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="date" name="date"
                                                 value="{{ old('date') }}">
+                                                <span class="text-danger">{{ $errors->first('date') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -809,6 +820,7 @@
                                         <div class="col-sm-11">
                                             <textarea class="form-control" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
+                                                <span class="text-danger">{{ $errors->first('remark') }}</span>
                                         </div>
                                     </div>
                                     <div class="row">

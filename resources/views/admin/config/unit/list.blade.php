@@ -58,7 +58,7 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $value->name }}</td>
-                                <td>{{ date('d-m-Y H:i', strtotime($value->updated_at)) }}</td>
+                                <td>{!! $value->remark !!}</td>
                                 <td>
                                     <a href="{{ route('admin.unit.edit', ['id'=>$value->id])}}"
                                         class="btn btn-warning">Edit</a>

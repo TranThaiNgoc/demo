@@ -38,10 +38,10 @@ class BuController extends Controller
         return view('admin.themes.bu.list', $data);
     }
 
-    public function getAdd() {
-        $bucategory = bucategory::where('is_deleted', 0)->get();
-        return view('admin.themes.bu.add', compact('bucategory'));
-    }
+    // public function getAdd() {
+    //     $bucategory = bucategory::where('is_deleted', 0)->get();
+    //     return view('admin.themes.bu.add', compact('bucategory'));
+    // }
 
     public function postAdd(Request $request) {
         $this->validate($request,
@@ -179,10 +179,10 @@ class BuController extends Controller
             $produces[] = $v->id;
         }
         Session::put('bu_produces', $produces);
-        $provarcost = provarcost::whereIn('pro_id', $produces)->get();
-        $profixcost = profixcost::whereIn('pro_id', $produces)->get();
-        $prorevenue = prorevenue::whereIn('pro_id', $produces)->get();
-        $proprofitshare = proprofitshare::whereIn('pro_id', $produces)->get();
+        $provarcost = provarcost::whereIn('pro_id', $produces)->where('is_deleted', 0)->get();
+        $profixcost = profixcost::whereIn('pro_id', $produces)->where('is_deleted', 0)->get();
+        $prorevenue = prorevenue::whereIn('pro_id', $produces)->where('is_deleted', 0)->get();
+        $proprofitshare = proprofitshare::whereIn('pro_id', $produces)->where('is_deleted', 0)->get();
         $total_profixcost = 0;
         foreach($profixcost as $key => $value) {
             $total_profixcost += ($value->total);
@@ -514,16 +514,22 @@ class BuController extends Controller
         return $pdf->download('Produce.pdf');
     }
 
-    public function postImportProduce(Request $request) {
-        // $this->validate($request,
-        // [
-        //     'select_file' => 'required|mimes:xls.xlsx'
-        // ]);
+    public function postImportProduce(Request $request, $id) {
+        $this->validate($request,
+        [
+            'select_file' => 'required',
+        ]);
+        $extensions = array("xls","xlsx","xlm","xla","xlc","xlt","xlw");
+        $result = array($request->file('select_file')->getClientOriginalExtension());
+        if(!in_array($result[0],$extensions)){
+            return redirect()->back()->with('error', 'The file is malformed.');
+        }
         $path = $request->file('select_file')->getRealPath();
         $data = Excel::load($path)->get();
         if(count($data) > 0) {
             foreach($data->toArray() as $Key => $value) {
                     $insert_data[] = array(
+                        'bu_id' => $id,
                         'name' => $value['name'],
                         'code' => $value['code'],
                         'address' => $value['address'],
@@ -534,19 +540,6 @@ class BuController extends Controller
             }
         }
         DB::table('produce')->insert($insert_data);
-        // $produce = produce::where('bu_id', 3)->get();
-        // (new FastExcel($produce))->export('file.xlsx');
-        // // $produce = (new FastExcel)->import('file.xlsx');
-        // $produce = (new FastExcel)->import('file.xlsx', function ($line) {
-        //     return User::create([
-        //         'name' => $line['Name'],
-        //         'code' => $line['Code'],
-        //         'address' => $line['Address'],
-        //         'follow' => $line['Follow'],
-        //         'mail' => $line['Mail'],
-        //         'phone' => $line['phone'],
-        //     ]);
-        // });
         return redirect()->back()->with('success', 'Import successful.');
     }
 

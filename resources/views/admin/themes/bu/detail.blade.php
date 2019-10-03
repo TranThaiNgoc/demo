@@ -24,6 +24,12 @@
         {{ session('error') }}
     </div>
     @endif
+    @if(count($errors) > 0)
+    <div class="col-lg-9 alert alert-danger" id="success-danger">
+        <button type="button" class="close" data-dismiss="danger">x</button>
+        The fields must not be blank
+    </div>
+    @endif
 </div>
 <div class="tab-content">
     <div class="row tab-pane fade in active" id="info">
@@ -87,16 +93,20 @@
                         <div class="form-group">
                             <label class="col-sm-1 control-label">Remark</label>
                             <div class="col-sm-11">
-                                <textarea class="form-control ckeditor" type="text" name="remark">{{ $bu->remark }}</textarea>
+                                <textarea class="form-control ckeditor" type="text"
+                                    name="remark">{{ $bu->remark }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-10">
+                                <button type="submit" class="btn btn-info btn-block">Save</button>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 col-md-offset-8">
-                                <table>
-                                    <td><button type="submit" class="btn btn-info" id="myWish">Save</button>
-                                    </td>
-                                </table>
+
                             </div>
                         </div>
                     </form>
@@ -116,8 +126,8 @@
                     <div class="col-sm-9">
                         <div class="white-box">
                             <div>
-                                <form class="form-horizontal"
-                                    action="{{ url('bu/add-produce', ['id' => $bu->id]) }}" method="POST">
+                                <form class="form-horizontal" action="{{ url('bu/add-produce', ['id' => $bu->id]) }}"
+                                    method="POST">
                                     @csrf
 
                                     <div class="form-group">
@@ -125,12 +135,14 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="name"
                                                 value="{{ old('name') }}">
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Code</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="code"
                                                 value="{{ old('code') }}">
+                                            <span class="text-danger">{{ $errors->first('code') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Category</label>
@@ -140,6 +152,7 @@
                                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('procategory_id') }}</span>
                                         </div>
                                     </div>
 
@@ -148,6 +161,7 @@
                                         <div class="col-sm-11">
                                             <input class="form-control" type="text" name="address"
                                                 value="{{ old('address') }}">
+                                            <span class="text-danger">{{ $errors->first('address') }}</span>
                                         </div>
                                     </div>
 
@@ -156,18 +170,21 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="follow"
                                                 value="{{ old('follow') }}">
+                                            <span class="text-danger">{{ $errors->first('follow') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Email</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="email" name="mail"
                                                 value="{{ old('mail') }}">
+                                            <span class="text-danger">{{ $errors->first('mail') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Phone</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="phone"
                                                 value="{{ old('phone') }}">
+                                            <span class="text-danger">{{ $errors->first('phone') }}</span>
                                         </div>
                                     </div>
 
@@ -177,6 +194,7 @@
                                         <div class="col-sm-11">
                                             <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
+                                            <span class="text-danger">{{ $errors->first('remark') }}</span>
                                         </div>
                                     </div>
 
@@ -200,16 +218,23 @@
                                     class="btn btn-default btn-block">Export</a>
                             </div>
                             <div class="col-md-2">
-                                <a href="{{ route('admin.bu.pdf.produce', ['id'=>$bu->id]) }}" class="btn btn-default btn-block">PDF</a>
+                                <a href="{{ route('admin.bu.pdf.produce', ['id'=>$bu->id]) }}"
+                                    class="btn btn-default btn-block">PDF</a>
                             </div>
-                            <form action="{{ url('bu/import') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                                <div class="col-md-2">
-                                    <input type="file" name="select_file" class="form-control">
-                                    <input type="submit" value="Import" class="form-control">
+                            <div class="col-md-2 import">
+                                <form action="{{ url('bu/import',['id'=>$bu->id]) }}" method="post"
+                                enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="col-md-4">
+                                        <label for="upload-photo" style="line-height:35px;">File...</label>
+                                        <input type="file" name="select_file" id="upload-photo" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="submit" value="Import" class="form-control import">
+                                    </div>
                                     <span class="text-danger">{{ $errors->first('select_file') }}</span>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                         <br>
                         <div>
@@ -223,7 +248,7 @@
                                                 <th>Code</th>
                                                 <th>Category</th>
                                                 <th>Follow</th>
-                                                <th>Action</th>
+                                                <th style="padding-left:90px;">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -272,27 +297,28 @@
                     <div class="col-sm-9">
                         <div class="white-box">
                             <div>
-                                <form class="form-horizontal"
-                                    action="{{ url('bu/add-variable', ['id' => $bu->id]) }}" method="post">
+                                <form class="form-horizontal" action="{{ url('bu/add-variable', ['id' => $bu->id]) }}"
+                                    method="post">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="name" value="{{ $bu->name }}"
                                                 disabled="">
-                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Item</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="item"
                                                 value="{{ old('item') }}">
+                                            <span class="text-danger">{{ $errors->first('item') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Doc Num</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="docnum"
                                                 value="{{ old('docnum') }}">
+                                            <span class="text-danger">{{ $errors->first('docnum') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -303,6 +329,7 @@
                                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('itemcategory_id') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Cost Cat.</label>
@@ -312,12 +339,14 @@
                                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('costcategory_id') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Date</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="date" name="date"
                                                 value="{{ old('date') }}">
+                                            <span class="text-danger">{{ $errors->first('date') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -327,6 +356,7 @@
                                                 <td>
                                                     <input class="form-control" type="number" name="qty"
                                                         style="width: 70px">
+                                                    <span class="text-danger">{{ $errors->first('qty') }}</span>
                                                 </td>
                                                 <td>
                                                     <select name="unit_id" class="form-control">
@@ -334,6 +364,7 @@
                                                         <option value="{{ $key }}">{{ $value }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger">{{ $errors->first('unit_id') }}</span>
                                                 </td>
                                             </table>
                                         </div>
@@ -342,6 +373,7 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="number" name="cost"
                                                 value="{{ old('cost') }}">
+                                            <span class="text-danger">{{ $errors->first('cost') }}</span>
                                         </div>
 
                                     </div>
@@ -350,6 +382,7 @@
                                         <div class="col-sm-11">
                                             <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
+                                            <span class="text-danger">{{ $errors->first('remark') }}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -373,8 +406,7 @@
 
                         <div class="row">
                             <div class="col-md-2">
-                                <a href="#"
-                                    class="btn btn-default btn-block">Export</a>
+                                <a href="#" class="btn btn-default btn-block">Export</a>
 
                             </div>
                         </div>
@@ -494,7 +526,7 @@
     <div class="row tab-pane fade" id="fixcost">
         <ul class="nav nav-tabs">
             <li><a data-toggle="tab" href="#addfixcost">Add Cost</a></li>
-            <li><a data-toggle="tab" href="#profixcost">Produce Variable Cost</a></li>
+            <li><a data-toggle="tab" href="#profixcost">Produce Fixed Cost</a></li>
             <li class="active"><a data-toggle="tab" href="#fixcostlist">List</a></li>
         </ul>
         <div class="form-group">
@@ -511,19 +543,20 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="name" value="{{ $bu->name }}"
                                                 disabled="">
-                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Item</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="item"
                                                 value="{{ old('item') }}">
+                                            <span class="text-danger">{{ $errors->first('item') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Doc Num</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="docnum"
                                                 value="{{ old('docnum') }}">
+                                            <span class="text-danger">{{ $errors->first('docnum') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -534,6 +567,7 @@
                                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('itemcategory_id') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Cost Cat.</label>
@@ -543,12 +577,14 @@
                                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('costcategory_id') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Date</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="date" name="date"
                                                 value="{{ old('date') }}">
+                                            <span class="text-danger">{{ $errors->first('date') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -558,6 +594,7 @@
                                                 <td>
                                                     <input class="form-control" type="number" name="qty"
                                                         style="width: 70px">
+                                                    <span class="text-danger">{{ $errors->first('qty') }}</span>
                                                 </td>
                                                 <td>
                                                     <select name="unit_id" class="form-control">
@@ -565,6 +602,7 @@
                                                         <option value="{{ $key }}">{{ $value }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger">{{ $errors->first('unit_id') }}</span>
                                                 </td>
                                             </table>
                                         </div>
@@ -573,6 +611,7 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="number" name="cost"
                                                 value="{{ old('cost') }}">
+                                            <span class="text-danger">{{ $errors->first('cost') }}</span>
                                         </div>
 
                                     </div>
@@ -581,6 +620,7 @@
                                         <div class="col-sm-11">
                                             <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
+                                            <span class="text-danger">{{ $errors->first('remark') }}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -732,13 +772,13 @@
                     <div class="col-sm-9">
                         <div class="white-box">
                             <div>
-                                <form class="form-horizontal"
-                                    action="{{ url('bu/add-revenue', ['id'=> $bu->id]) }}" method="post">
+                                <form class="form-horizontal" action="{{ url('bu/add-revenue', ['id'=> $bu->id]) }}"
+                                    method="post">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>
                                         <div class="col-sm-3">
-                                            <input class="form-control" type="text" name="name" value="{{ $bu->name }}"
+                                            <input class="form-control" type="text" name="names" value="{{ $bu->name }}"
                                                 disabled="">
                                         </div>
 
@@ -746,6 +786,7 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="docnum"
                                                 value="{{ old('docnum') }}">
+                                            <span class="text-danger">{{ $errors->first('docnum') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Cat.</label>
@@ -755,6 +796,7 @@
                                                 <option value={{ $value->id }}>{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('cart_item') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -762,18 +804,21 @@
                                         <div class="col-sm-3">
                                             <input class="form-control" type="text" name="name"
                                                 value="{{ old('name') }}">
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Amount</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="number" name="amount"
                                                 value="{{ old('amount') }}">
+                                            <span class="text-danger">{{ $errors->first('amount') }}</span>
                                         </div>
 
                                         <label class="col-sm-1 control-label">Date</label>
                                         <div class="col-sm-3">
                                             <input class="form-control" type="date" name="date"
                                                 value="{{ old('date') }}">
+                                            <span class="text-danger">{{ $errors->first('date') }}</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -781,6 +826,7 @@
                                         <div class="col-sm-11">
                                             <textarea class="form-control ckeditor" type="text"
                                                 name="remark">{{ old('remark') }}</textarea>
+                                            <span class="text-danger">{{ $errors->first('remark') }}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -915,8 +961,8 @@
                     <div class="col-sm-9">
                         <div class="white-box">
                             <div>
-                                <form class="form-horizontal"
-                                    action="{{ url('bu/add-profit',['id' => $bu->id]) }}" method="POST">
+                                <form class="form-horizontal" action="{{ url('bu/add-profit',['id' => $bu->id]) }}"
+                                    method="POST">
                                     @csrf
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label">BU</label>
@@ -999,7 +1045,8 @@
                                 break;
                                 @endphp
                                 @endforeach
-                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đồng</code></h2>
+                                <h2> Profit Share: <code>{{ number_format($total_profitshare,0,',','.') }} đồng</code>
+                                </h2>
                             </div>
                         </div>
 

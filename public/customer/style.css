@@ -1,0 +1,24 @@
+label {
+   cursor: pointer;
+   /* Style as you please, it will become the visible UI component. */
+}
+
+#upload-photo {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+}
+.col-md-2.import {
+    background: #e4e7ea;
+    width: 189px;
+    border-radius: 3px;
+    height: 35px;
+}
+button, html input[type=button], input[type=reset], input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer;
+    height: 34px;
+}
+input.form-control.import {
+    background: #e4e7ea;
+}

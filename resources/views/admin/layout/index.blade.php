@@ -30,11 +30,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- color CSS -->
     <link href="{{ asset('css/colors/default.css') }}" id="theme" rel="stylesheet">
-
+    
     <!-- DataTables CSS -->
-
+    
     <!-- DataTables Responsive CSS -->
     <link href="{{ asset('admin/datatable/jquery.dataTables.min.css') }}" id="theme" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('customer/style.css') }}">
 
     @show
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
